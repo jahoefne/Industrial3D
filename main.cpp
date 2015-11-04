@@ -1,12 +1,15 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <iostream>   //for making output text to the console with "cout"
+#include <vector>     //for std::vector class functions
+#include "PointCloud.h"
+
+
 #include <GL/glew.h>
 #include <GL/glut.h>
-#include <trackball.h>
-
+#include <time.h>
 /*
  * (c) Copyright 1993, 1994, Silicon Graphics, Inc.
  * ALL RIGHTS RESERVED
@@ -61,8 +64,8 @@
 #if defined(_WIN32)
 #pragma warning (disable:4244)          /* disable bogus conversion warnings */
 #endif
+
 #include <math.h>
-#include "trackball.h"
 
 /*
  * This size should really be based on the distance from the center of
@@ -80,60 +83,121 @@
 ///////////////////////////////////////////////////////////////
 //<---------------------------Start Load Data----------------------->>
 ///////////////////////////////////////////////////////////////
-#define MaxVertices 400000
-#define MaxFaces    400000 
-#define MaxGroups   100
 
-float       vertex[MaxVertices*3];
-unsigned int  face[MaxFaces*3];
-char    group_name[MaxGroups][80];
-int     start_face[MaxGroups];
+#define MaxVertices 400000
+#define MaxFaces    400000
+#define MaxGroups   100
+using namespace std;
+//Definition of a Point3d
+struct Point3d {
+    //new compilers will remind you to initialize variables before they can be used
+    double x = 0;
+    double y = 0;
+    double z = 0;
+};
+
+
+float vertex[40000000];
+unsigned int face[MaxFaces * 3];
+char group_name[MaxGroups][80];
+int start_face[MaxGroups];
 
 int vertices = 0;
-int faces    = 0;
-int groups   = 0;
+int faces = 0;
+int groups = 0;
+float zoom = 1.0;
 
-void read_wavefront(const char *filename)
-{
-  char line[80];
-  FILE *f = fopen(filename, "r");
-  while(fgets(line, sizeof(line), f))
-    switch(line[0])
-      {
-      case 'v':
-        sscanf(&line[1],  "%f %f %f", &vertex[vertices*3],
-               &vertex[vertices*3+1], &vertex[vertices*3+2]);
-        ++vertices;
-        break;
-      case 'g':
-        sscanf(&line[1], "%s", group_name[groups]);
-        start_face[groups++] = faces;
-        break;
-      case 'f':
-        sscanf(&line[1],  "%d %d %d", &face[faces*3],
-               &face[faces*3+1], &face[faces*3+2]);
-        --face[faces*3]; --face[faces*3+1];
-        --face[faces*3+2]; ++faces; 
-        break;
-      }
-  fclose(f);
-  start_face[groups] = faces;
-  printf("Read %d vertices and %d faces within %d groups from %s\n",
-         vertices, faces, groups, filename);
+std::vector<Point3d> points;
+
+///////////////////////////////////////////////////////////////
+//<--------------------------- Load Data Version XYZ file------------------->>
+///////////////////////////////////////////////////////////////
+//Here is the implementation of our file reader
+void loadFileXYZ(const char *filename, std::vector<Point3d> &points) {
+
+    double a = 0;
+    double b = 0;
+    double c = 0;
+    FILE *file = fopen(filename, "rt"); //r= read, t=text
+    if(file==NULL){
+        printf("No such file!");
+        fflush(stdout);
+    }
+
+    std::cout << "reading file: " << filename << std::endl;
+
+    while (!feof(file)) //as long we have not reached the end-of-file
+    {
+        Point3d point;
+        // int items = fscanf(file, "%lf %lf %lf\n", &point.x, &point.y, &point.z);
+        int items = fscanf(file, "%lf %lf %lf\n", &point.x, &point.y, &point.z);
+        //   int items = fscanf(file, "%lf %lf %lf\n", &vertex[vertices*3], &vertex[vertices*3+1], &vertex[vertices*3+2]);
+
+        printf("%lf %lf %lf\n", a, b, c);
+        //  printf("%lf %lf %lf\n", &vertex[vertices*3], &vertex[vertices*3+1], &vertex[vertices*3+2]);
+        vertex[vertices * 3] = a;
+        vertex[vertices * 3 + 1] = b;
+        vertex[vertices * 3 + 2] = c;
+        vertices++;
+        if (!feof(file) &&
+            (items != 3)) //we ecpected that 3 values have been read (except we are already at the end of file)
+        {
+            std::cout << "file format error" << std::endl;
+            break; //abort while loop
+        }
+        else {
+            points.push_back(point); //add the current point to our point vector
+        }
+    }
+
+    //dont forget to close to file
+    fclose(file);
+
+    unsigned int numberOfPoints = points.size();
+
+    std::cout << "reading finished: " << numberOfPoints << " points have be read" << std::endl;
 }
 
-void write_wavefront(int group_number)
-{
-  int i = 0; char n[80], *p = group_name[group_number];
-  while (*p != '%' && *p != '\0') n[i++] = *p++; // remove % from name
-  n[i++] = '.'; n[i++] = 'o'; n[i++] = 'b'; n[i++] = 'j'; n[i] = '\0';
-  FILE *f = fopen(n, "w"); fprintf(f, "# Wavefront OBJ file\n");
-  for (i = 0; i < vertices; i++)
-    fprintf(f, "v %g %g %g\n", vertex[i*3], vertex[i*3+1], vertex[i*3+2]);
-  fprintf(f, "g %s\n", group_name[group_number]);
-  for (i = start_face[group_number]; i < start_face[group_number+1]; ++i)
-    fprintf(f, "f %d %d %d\n", face[i*3]+1, face[i*3+1]+1, face[i*3+2]+1);
-  fclose(f);
+///////////////////////////////////////////////////////////////
+//<--------------------------- Load Data Version obj file------------------->>
+///////////////////////////////////////////////////////////////
+
+
+void read_wavefront(const char *filename) {
+    char line[80];
+    int i = 0;
+    FILE *f = fopen(filename, "r");
+//  while(fgets(line, sizeof(line), f)){
+    while (fgets(line, sizeof(line), f)) {
+        sscanf(&line[0], "%f %f %f", &vertex[vertices * 3],
+               &vertex[vertices * 3 + 1], &vertex[vertices * 3 + 2]);
+        printf("%s\n", &line[0]);
+        vertices = i;
+        i = i + 1;
+    }
+    //fclose(f);
+    // start_face[groups] = faces;
+    printf("Read %d vertices and %d faces within %d groups from %s\n",
+           vertices, faces, groups, filename);
+}
+
+void write_wavefront(int group_number) {
+    int i = 0;
+    char n[80], *p = group_name[group_number];
+    while (*p != '%' && *p != '\0') n[i++] = *p++; // remove % from name
+    n[i++] = '.';
+    n[i++] = 'o';
+    n[i++] = 'b';
+    n[i++] = 'j';
+    n[i] = '\0';
+    FILE *f = fopen(n, "w");
+    fprintf(f, "# Wavefront OBJ file\n");
+    for (i = 0; i < vertices; i++)
+        fprintf(f, "v %g %g %g\n", vertex[i * 3], vertex[i * 3 + 1], vertex[i * 3 + 2]);
+    fprintf(f, "g %s\n", group_name[group_number]);
+    for (i = start_face[group_number]; i < start_face[group_number + 1]; ++i)
+        fprintf(f, "f %d %d %d\n", face[i * 3] + 1, face[i * 3 + 1] + 1, face[i * 3 + 2] + 1);
+    fclose(f);
 }
 
 
@@ -141,38 +205,34 @@ void write_wavefront(int group_number)
 //<---------------------------End Load Data----------------------->>
 ///////////////////////////////////////////////////////////////
 static float tb_project_to_sphere(float, float, float);
+
 static void normalize_quat(float [4]);
 
-void vzero(float *v)
-{
+void vzero(float *v) {
     v[0] = 0.0;
     v[1] = 0.0;
     v[2] = 0.0;
 }
 
-void vset(float *v, float x, float y, float z)
-{
+void vset(float *v, float x, float y, float z) {
     v[0] = x;
     v[1] = y;
     v[2] = z;
 }
 
-void vsub(const float *src1, const float *src2, float *dst)
-{
+void vsub(const float *src1, const float *src2, float *dst) {
     dst[0] = src1[0] - src2[0];
     dst[1] = src1[1] - src2[1];
     dst[2] = src1[2] - src2[2];
 }
 
-void vcopy(const float *v1, float *v2)
-{
+void vcopy(const float *v1, float *v2) {
     register int i;
-    for (i = 0 ; i < 3 ; i++)
+    for (i = 0; i < 3; i++)
         v2[i] = v1[i];
 }
 
-void vcross(const float *v1, const float *v2, float *cross)
-{
+void vcross(const float *v1, const float *v2, float *cross) {
     float temp[3];
 
     temp[0] = (v1[1] * v2[2]) - (v1[2] * v2[1]);
@@ -181,34 +241,37 @@ void vcross(const float *v1, const float *v2, float *cross)
     vcopy(temp, cross);
 }
 
-float vlength(const float *v)
-{
+float vlength(const float *v) {
     return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
-void vscale(float *v, float div)
-{
+void vscale(float *v, float div) {
     v[0] *= div;
     v[1] *= div;
     v[2] *= div;
 }
 
-void vnormal(float *v)
-{
-    vscale(v,1.0/vlength(v));
+void vnormal(float *v) {
+    vscale(v, 1.0 / vlength(v));
 }
 
-float vdot(const float *v1, const float *v2)
-{
-    return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
+float vdot(const float *v1, const float *v2) {
+    return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
-void vadd(const float *src1, const float *src2, float *dst)
-{
+void vadd(const float *src1, const float *src2, float *dst) {
     dst[0] = src1[0] + src2[0];
     dst[1] = src1[1] + src2[1];
     dst[2] = src1[2] + src2[2];
 }
+
+void axis_to_quat(float a[3], float phi, float q[4]) {
+    vnormal(a);
+    vcopy(a, q);
+    vscale(q, sin(phi / 2.0));
+    q[3] = cos(phi / 2.0);
+}
+
 
 /*
  * Ok, simulate a track-ball.  Project the points onto the virtual
@@ -222,8 +285,7 @@ void vadd(const float *src1, const float *src2, float *dst)
  * It is assumed that the arguments to this routine are in the range
  * (-1.0 ... 1.0)
  */
-void trackball(float q[4], float p1x, float p1y, float p2x, float p2y)
-{
+void trackball(float q[4], float p1x, float p1y, float p2x, float p2y) {
     float a[3]; /* Axis of rotation */
     float phi;  /* how much to rotate about axis */
     float p1[3], p2[3], d[3];
@@ -240,19 +302,19 @@ void trackball(float q[4], float p1x, float p1y, float p2x, float p2y)
      * First, figure out z-coordinates for projection of P1 and P2 to
      * deformed sphere
      */
-    vset(p1,p1x,p1y,tb_project_to_sphere(TRACKBALLSIZE,p1x,p1y));
-    vset(p2,p2x,p2y,tb_project_to_sphere(TRACKBALLSIZE,p2x,p2y));
+    vset(p1, p1x, p1y, tb_project_to_sphere(TRACKBALLSIZE, p1x, p1y));
+    vset(p2, p2x, p2y, tb_project_to_sphere(TRACKBALLSIZE, p2x, p2y));
 
     /*
      *  Now, we want the cross product of P1 and P2
      */
-    vcross(p2,p1,a);
+    vcross(p2, p1, a);
 
     /*
      *  Figure out how much to rotate around that axis.
      */
-    vsub(p1,p2,d);
-    t = vlength(d) / (2.0*TRACKBALLSIZE);
+    vsub(p1, p2, d);
+    t = vlength(d) / (2.0 * TRACKBALLSIZE);
 
     /*
      * Avoid problems with out-of-control values...
@@ -261,34 +323,25 @@ void trackball(float q[4], float p1x, float p1y, float p2x, float p2y)
     if (t < -1.0) t = -1.0;
     phi = 2.0 * asin(t);
 
-    axis_to_quat(a,phi,q);
+    axis_to_quat(a, phi, q);
 }
 
 /*
  *  Given an axis and angle, compute quaternion.
  */
-void axis_to_quat(float a[3], float phi, float q[4])
-{
-    vnormal(a);
-    vcopy(a,q);
-    vscale(q,sin(phi/2.0));
-    q[3] = cos(phi/2.0);
-}
-
 /*
  * Project an x,y pair onto a sphere of radius r OR a hyperbolic sheet
  * if we are away from the center of the sphere.
  */
-static float tb_project_to_sphere(float r, float x, float y)
-{
+static float tb_project_to_sphere(float r, float x, float y) {
     float d, t, z;
 
-    d = sqrt(x*x + y*y);
+    d = sqrt(x * x + y * y);
     if (d < r * 0.70710678118654752440) {    /* Inside sphere */
-        z = sqrt(r*r - d*d);
+        z = sqrt(r * r - d * d);
     } else {           /* On hyperbola */
         t = r / 1.41421356237309504880;
-        z = t*t / d;
+        z = t * t / d;
     }
     return z;
 }
@@ -306,30 +359,29 @@ static float tb_project_to_sphere(float r, float x, float y)
 
 #define RENORMCOUNT 97
 
-void add_quats(float q1[4], float q2[4], float dest[4])
-{
-    static int count=0;
+void add_quats(float q1[4], float q2[4], float dest[4]) {
+    static int count = 0;
     float t1[4], t2[4], t3[4];
     float tf[4];
 
 #if 0
-printf("q1 = %f %f %f %f\n", q1[0], q1[1], q1[2], q1[3]);
-printf("q2 = %f %f %f %f\n", q2[0], q2[1], q2[2], q2[3]);
+    printf("q1 = %f %f %f %f\n", q1[0], q1[1], q1[2], q1[3]);
+    printf("q2 = %f %f %f %f\n", q2[0], q2[1], q2[2], q2[3]);
 #endif
 
-    vcopy(q1,t1);
-    vscale(t1,q2[3]);
+    vcopy(q1, t1);
+    vscale(t1, q2[3]);
 
-    vcopy(q2,t2);
-    vscale(t2,q1[3]);
+    vcopy(q2, t2);
+    vscale(t2, q1[3]);
 
-    vcross(q2,q1,t3);
-    vadd(t1,t2,tf);
-    vadd(t3,tf,tf);
-    tf[3] = q1[3] * q2[3] - vdot(q1,q2);
+    vcross(q2, q1, t3);
+    vadd(t1, t2, tf);
+    vadd(t3, tf, tf);
+    tf[3] = q1[3] * q2[3] - vdot(q1, q2);
 
 #if 0
-printf("tf = %f %f %f %f\n", tf[0], tf[1], tf[2], tf[3]);
+    printf("tf = %f %f %f %f\n", tf[0], tf[1], tf[2], tf[3]);
 #endif
 
     dest[0] = tf[0];
@@ -355,12 +407,11 @@ printf("tf = %f %f %f %f\n", tf[0], tf[1], tf[2], tf[3]);
  * - Pletinckx, D., Quaternion calculus as a basic tool in computer
  *   graphics, The Visual Computer 5, 2-13, 1989.
  */
-static void normalize_quat(float q[4])
-{
+static void normalize_quat(float q[4]) {
     int i;
     float mag;
 
-    mag = sqrt(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]);
+    mag = sqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
     for (i = 0; i < 4; i++) q[i] /= mag;
 }
 
@@ -368,15 +419,14 @@ static void normalize_quat(float q[4])
  * Build a rotation matrix, given a quaternion rotation.
  *
  */
-void build_rotmatrix(float m[4][4], float q[4])
-{
+void build_rotmatrix(float m[4][4], float q[4]) {
     m[0][0] = 1.0 - 2.0 * (q[1] * q[1] + q[2] * q[2]);
     m[0][1] = 2.0 * (q[0] * q[1] - q[2] * q[3]);
     m[0][2] = 2.0 * (q[2] * q[0] + q[1] * q[3]);
     m[0][3] = 0.0;
 
     m[1][0] = 2.0 * (q[0] * q[1] + q[2] * q[3]);
-    m[1][1]= 1.0 - 2.0 * (q[2] * q[2] + q[0] * q[0]);
+    m[1][1] = 1.0 - 2.0 * (q[2] * q[2] + q[0] * q[0]);
     m[1][2] = 2.0 * (q[1] * q[2] - q[0] * q[3]);
     m[1][3] = 0.0;
 
@@ -392,20 +442,17 @@ void build_rotmatrix(float m[4][4], float q[4])
 }
 
 /* Fortran wrappers */
-void trackball_(float *q, float *p1x, float *p1y, float *p2x, float *p2y)
-{
-   trackball( q, *p1x, *p1y, *p2x, *p2y);
-}
-  
-void add_quats__(float q1[4], float q2[4], float dest[4])
-{
-        add_quats(q1, q2, dest);
+void trackball_(float *q, float *p1x, float *p1y, float *p2x, float *p2y) {
+    trackball(q, *p1x, *p1y, *p2x, *p2y);
 }
 
-void build_rotmatrix__(float m[4][4], float q[4])
-{
-     /* matrix m is transposed twice. No need to do this here */
-     build_rotmatrix(m, q);
+void add_quats__(float q1[4], float q2[4], float dest[4]) {
+    add_quats(q1, q2, dest);
+}
+
+void build_rotmatrix__(float m[4][4], float q[4]) {
+    /* matrix m is transposed twice. No need to do this here */
+    build_rotmatrix(m, q);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -413,18 +460,20 @@ void build_rotmatrix__(float m[4][4], float q[4])
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GLuint program;
 
-static const GLchar * vertex_shader[] ={"\
+static const GLchar *vertex_shader[] = {"\
 varying vec3 normal, lightDir;\
-uniform mat4 RotationMatrix;\
+uniform mat4 RotationMatrix;  \
+uniform float Zoom;\
 void main()\
 {          \
-  lightDir=normalize(vec3(gl_LightSource[0].position));\
-  normal=normalize(gl_NormalMatrix*gl_Normal);\
-  gl_Position = gl_ProjectionMatrix * \
-  RotationMatrix*gl_ModelViewMatrix*gl_Vertex;\
+  lightDir=normalize(vec3(gl_LightSource[0].position)); \
+  vec4 n = RotationMatrix*vec4(gl_NormalMatrix*gl_Normal, 1);\
+  normal=normalize(n.xyz);         \
+  gl_Position = gl_ProjectionMatrix * RotationMatrix \
+   * gl_ModelViewMatrix*vec4(Zoom*gl_Vertex.xyz, 1.0); \
 }"};
 
-static const GLchar * fragment_shader[] ={"\
+static const GLchar *fragment_shader[] = {"\
 /* simple toon fragment shader */\
 /* www.lighthouse3d.com        */\
 \
@@ -449,50 +498,49 @@ void main()\
         gl_FragColor = color;\
 }"};
 
-void create_shaders()
-{
-  GLuint v, f;
+void create_shaders() {
+    GLuint v, f;
 
-  v = glCreateShader(GL_VERTEX_SHADER);
-  f = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(v, 1, vertex_shader, NULL);
-  glShaderSource(f, 1, fragment_shader, NULL);
-  glCompileShader(v);
-  GLint compiled;
-  glGetShaderiv(v, GL_COMPILE_STATUS, &compiled );
-  if ( !compiled ) {
-    GLsizei  maxLength, length;
-    glGetShaderiv( v, GL_INFO_LOG_LENGTH, &maxLength );
-    GLchar* log = (char*)malloc(sizeof(GLchar)*(maxLength+1));
-    glGetShaderInfoLog(v,  maxLength, &length, log);
-    printf("Vertex Shader compilation failed: %s\n", log);
-    free(log);
-  }
-  glCompileShader(f);
-  glGetShaderiv(f, GL_COMPILE_STATUS, &compiled );
-  if ( !compiled ) {
-    GLsizei  maxLength, length;
-    glGetShaderiv( f, GL_INFO_LOG_LENGTH, &maxLength );
-    GLchar* log = (char*)malloc(sizeof(GLchar)*(maxLength+1));
-    glGetShaderInfoLog(f,  maxLength, &length, log);
-    printf("Fragment Shader compilation failed: %s\n", log);
-    free(log);
-  }
-  program = glCreateProgram();
-  glAttachShader(program, f);
-  glAttachShader(program, v);
-  glLinkProgram(program);
-  GLint linked;
-  glGetProgramiv(program, GL_LINK_STATUS, &linked );
-  if ( !linked ) {
-    GLsizei len;
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len );
-    GLchar* log = (char*)malloc(sizeof(GLchar)*(len+1));
-    glGetProgramInfoLog(program, len, &len, log );
-    printf("Shader linking failed: %s\n", log);
-    free(log);
-  }
-  glUseProgram(program);
+    v = glCreateShader(GL_VERTEX_SHADER);
+    f = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(v, 1, vertex_shader, NULL);
+    glShaderSource(f, 1, fragment_shader, NULL);
+    glCompileShader(v);
+    GLint compiled;
+    glGetShaderiv(v, GL_COMPILE_STATUS, &compiled);
+    if (!compiled) {
+        GLsizei maxLength, length;
+        glGetShaderiv(v, GL_INFO_LOG_LENGTH, &maxLength);
+        GLchar *log = (char *) malloc(sizeof(GLchar) * (maxLength + 1));
+        glGetShaderInfoLog(v, maxLength, &length, log);
+        printf("Vertex Shader compilation failed: %s\n", log);
+        free(log);
+    }
+    glCompileShader(f);
+    glGetShaderiv(f, GL_COMPILE_STATUS, &compiled);
+    if (!compiled) {
+        GLsizei maxLength, length;
+        glGetShaderiv(f, GL_INFO_LOG_LENGTH, &maxLength);
+        GLchar *log = (char *) malloc(sizeof(GLchar) * (maxLength + 1));
+        glGetShaderInfoLog(f, maxLength, &length, log);
+        printf("Fragment Shader compilation failed: %s\n", log);
+        free(log);
+    }
+    program = glCreateProgram();
+    glAttachShader(program, f);
+    glAttachShader(program, v);
+    glLinkProgram(program);
+    GLint linked;
+    glGetProgramiv(program, GL_LINK_STATUS, &linked);
+    if (!linked) {
+        GLsizei len;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+        GLchar *log = (char *) malloc(sizeof(GLchar) * (len + 1));
+        glGetProgramInfoLog(program, len, &len, log);
+        printf("Shader linking failed: %s\n", log);
+        free(log);
+    }
+    glUseProgram(program);
 }
 
 
@@ -503,92 +551,145 @@ int width, height, beginx, beginy;
 float p1x, p1y, p2x, p2y;
 
 void display(void) {
-  GLuint location = glGetUniformLocation(program, "RotationMatrix");
-  build_rotmatrix(m, cur);  
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLightfv(GL_LIGHT0, GL_POSITION, lpos);
-  if( location >= 0 )
-    glUniformMatrix4fv(location, 1, GL_FALSE, &m[0][0]);
-  //glutSolidTeapot(0.6);
-  
-  glVertexPointer(3, GL_FLOAT, 0, vertex);
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glDrawArrays(GL_POINTS, 0, vertices);
-  glDisableClientState(GL_VERTEX_ARRAY);
+    GLuint location = glGetUniformLocation(program, "RotationMatrix");
+    build_rotmatrix(m, cur);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+    if (location >= 0)
+        glUniformMatrix4fv(location, 1, GL_FALSE, &m[0][0]);
+    location = glGetUniformLocation(program, "Zoom");
+    if (location >= 0) glUniform1f(location, zoom);
+    //glutSolidTeapot(0.6);
 
-  glutSwapBuffers();
+    // glVertexPointer(3, GL_FLOAT, 0, vertex);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    // glDrawArrays(GL_POINTS, 0, vertices);
+    // glDisableClientState(GL_VERTEX_ARRAY);
+
+    //THis is from the profesor
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear buffers
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);   //clear background color
+    glClearDepth(1.0f);                     //clear depth buffer
+
+    glPointSize(2);
+    glColor3ub(255, 255, 255);
+
+    glBegin(GL_POINTS);
+    for (int i = 0; i < points.size(); ++i) {
+        const Point3d& point = points[i];
+        glVertex3d(point.x,point.y,point.z);
+    }
+    glEnd();
+    //
+
+    //
+    glutSwapBuffers();
 }
 
-void reshape (int w, int h)
-{
-  double l = 1;
-  width=w;  height=h;
-  glViewport (0, 0, w, h);
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity();
-  glOrtho(-l, l, -l, l, -l, l);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+void reshape(int w, int h) {
+    double l = 1;
+    width = w;
+    height = h;
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-l, l, -l, l, -l, l);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
-void keys(unsigned char key, int x, int y)
-{
-   if (key == 27 || key == 'q') 
-         exit(0);
+void keys(unsigned char key, int x, int y) {
+    if (key == 27 || key == 'q')
+        exit(0);
 }
 
-void mouse(int button,int state, int x, int y)   
-{
-  beginx = x;
-  beginy = y;
+void mouse(int button, int state, int x, int y) {
+    beginx = x;
+    beginy = y;
+    if (button == 3 && state == GLUT_DOWN) {
+        zoom *= 1.1;
+        glutPostRedisplay();
+    }
+    else if (button == 4 && state == GLUT_DOWN) {
+        zoom /= 1.1;
+        glutPostRedisplay();
+    }
 }
 
-void motion(int x,int y)   
-{
-  p1x = (2.0*beginx - width)/width;
-  p1y = (height - 2.0*beginy)/height;
-  p2x = (2.0 * x - width) / width;
-  p2y = (height - 2.0 * y) / height;
-  trackball(last, p1x, p1y, p2x, p2y);   
-  add_quats(last, cur, cur);   
-  beginx = x;
-  beginy = y;
-  glutPostRedisplay();   
+void motion(int x, int y) {
+    p1x = (2.0 * beginx - width) / width;
+    p1y = (height - 2.0 * beginy) / height;
+    p2x = (2.0 * x - width) / width;
+    p2y = (height - 2.0 * y) / height;
+    trackball(last, p1x, p1y, p2x, p2y);
+    add_quats(last, cur, cur);
+    beginx = x;
+    beginy = y;
+    glutPostRedisplay();
 }
 
-int main(int argc, char **argv)
-{
-  ///load  
-  int i;
-  read_wavefront("rider-body.obj");
-  for(i = 0; i < groups; i++) write_wavefront(i);
- 
-  /////
-  
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-  glutInitWindowSize(512, 512);
-  glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-512)/2,
-                         (glutGet(GLUT_SCREEN_HEIGHT)-512)/2);
-  glutCreateWindow("Use mouse to rotate");
-  
-  trackball(cur, 0.0, 0.0, 0.0, 0.0);
 
-  glutDisplayFunc(display);
-  glutReshapeFunc(reshape);
-  glutMouseFunc(mouse);
-  glutMotionFunc(motion);
-  glutKeyboardFunc(keys);
+int main(int argc, char **argv) {
 
-  glEnable(GL_DEPTH_TEST);
-  glClearColor(1.0,1.0,1.0,1.0);
-  glewInit();
-  if (!glewIsSupported("GL_VERSION_2_0"))
-   {
-     printf("GLSL not supported\n");
-     exit(EXIT_FAILURE);
-   }
-  create_shaders();
-  glutMainLoop();
-  return EXIT_SUCCESS;
+    PointCloud cloud = PointCloud();
+    cout << "Please enter the filename: ";
+    std::string name;
+    cin >> name;
+    cout << "Reading " << name << "…" ;
+    cloud.loadPointsFromFile(name);
+    cloud.print();
+
+    glutInit(&argc, argv);
+
+
+    //prepare storage for our point cloud
+
+
+    //try to load point cloud data from file
+   /* loadFileXYZ("/Users/moe/Desktop/Industrial3D/data/cone.xyz", points);
+
+    printf("Loaded\n");
+    fflush(stdin);
+    //////////////////////////////
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowSize(512, 512);
+    glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - 512) / 2,
+                           (glutGet(GLUT_SCREEN_HEIGHT) - 512) / 2);
+    glutCreateWindow("Use mouse to rotate");
+
+    trackball(cur, 0, 0, 0, 0);
+
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+    glutKeyboardFunc(keys);
+
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glewInit();
+    if (!glewIsSupported("GL_VERSION_2_0")) {
+        printf("GLSL not supported\n");
+        fflush(stdout);
+        exit(EXIT_FAILURE);
+    }
+
+    int vertices2 = 0;
+    for (int i = 0; i < vertices; i++) {
+
+        printf("%f ", vertex[vertices2 * 3]);
+        printf("%f ", vertex[vertices2 * 3 + 1]);
+        printf("%f ", vertex[vertices2 * 3 + 2]);
+        vertices2++;
+        printf("\n");
+    }
+
+
+    create_shaders();
+    glutMainLoop();
+    printf("Foo");
+    return EXIT_SUCCESS;*/
+
 }
