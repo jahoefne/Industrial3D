@@ -12,9 +12,6 @@ set(SOURCE_FILES
         Point3D.h
 )
 
-# Disable warnings thrown by trackball.cpp
-set_source_files_properties(trackball.h PROPERTIES COMPILE_FLAGS -w)
-
 add_executable(Industrial3D ${SOURCE_FILES})
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

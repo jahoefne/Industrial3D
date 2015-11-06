@@ -12,36 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="752b1f0e-cc8c-4f7d-9d59-8e5714b77f61" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/Industrial3D.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Point3D.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/bunny.xyz" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/Debug/GNU-Linux-x86/main.o" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/Debug/GNU-Linux-x86/main.o.d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/Debug/GNU-Linux-x86/main2.o" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/Debug/GNU-Linux-x86/main2.o.d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Debug/GNU-Linux-x86/cppapplication_1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/fileLoad/main.cpp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/Makefile-Debug.mk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/Makefile-Release.mk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/Makefile-impl.mk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/Makefile-variables.mk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/Package-Debug.bash" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/Package-Release.bash" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/configurations.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/Makefile-variables.mk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/configurations.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/launcher.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/private.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/project.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PointCloud.cpp" afterPath="$PROJECT_DIR$/PointCloud.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PointCloud.h" afterPath="$PROJECT_DIR$/PointCloud.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Industrial3D.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -62,11 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.43820226">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -92,11 +64,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Point3D.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Point3D.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Point3D.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.26966292">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -294,7 +266,13 @@
       <option name="project" value="LOCAL" />
       <updated>1446657733188</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Cmake and Pointcloud">
+      <created>1446807878715</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1446807878715</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -633,10 +611,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+    <entry file="file://$PROJECT_DIR$/PointCloud.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
+          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Point3D.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -649,18 +635,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PointCloud.cpp">
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Point3D.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26966292">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.43820226">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>
