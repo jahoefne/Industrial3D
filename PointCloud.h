@@ -10,23 +10,20 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "Point3D.h"
 
 using namespace std;
 
 
 class PointCloud {
-private:
-    class Point3D {
-    public:
-        double x, y, z;
-        Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
-    };
-
 public:
     int loadPointsFromFile(string fileName);
     std::vector<Point3D*> points;
+    Point3D center;
+    Point3D boundingBoxMin;
+    Point3D boundingBoxMax;
+    double sceneRadius;
     void print();
-    void draw();
 };
 
 
