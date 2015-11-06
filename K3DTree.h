@@ -6,6 +6,7 @@
 #define INDUSTRIAL3D_K3DTREE_H
 
 #include "Point3D.h"
+#include <algorithm>
 #include "PointCloud.h"
 
 class KDNode {

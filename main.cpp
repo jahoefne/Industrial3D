@@ -82,7 +82,7 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
 
-    cloud->loadPointsFromFile("/Users/moe/Desktop/Industrial3D/data/bunny.xyz");
+    cloud->loadPointsFromFile("/home/rene/NetBeansProjects/Industrial3D/data/bunny.xyz");
 
     K3DTree* tree = new K3DTree(cloud);
 

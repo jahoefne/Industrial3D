@@ -2,6 +2,7 @@
 // Created by Jan Moritz Hoefner on 23/10/15.
 //
 
+#include <string.h>
 #include "PointCloud.h"
 
 
