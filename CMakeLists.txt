@@ -7,6 +7,7 @@ set(SOURCE_FILES
         data/cone.xyz
         data/bunny.xyz
         main.cpp
+        K3DTree.h
         PointCloud.cpp
         PointCloud.h
         Point3D.h

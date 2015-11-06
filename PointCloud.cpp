@@ -8,7 +8,7 @@
 void PointCloud::print() {
     std::cout << "Read " << this->points.size();
     for (unsigned long i = 0; i < this->points.size(); i++) {
-        Point3D *p = this->points.at(i);
+        Point3D* p = &this->points.at(i);
         std::cout << "(" << p->x << ", " << p->y << ", " << p->z << ")\n";
     }
 };
@@ -27,8 +27,8 @@ int PointCloud::loadPointsFromFile(std::string fileName) {
         while (pointFile >> x && pointFile >> y && pointFile >> z) {
 
             // Read point from file
-            Point3D *point = new Point3D(x, y, z);
-            points.push_back(point);
+            Point3D* point = new Point3D(x, y, z);
+            points.push_back(*point);
 
             // consider point for center calculation
             this->center.translate(point);

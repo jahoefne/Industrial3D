@@ -10,8 +10,10 @@
 class Point3D {
 public:
     double x, y, z;
+
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
     Point3D() : x(0), y(0), z(0) { }
+
     void translate(Point3D* dst) {
         x += dst->x;
         y += dst->y;

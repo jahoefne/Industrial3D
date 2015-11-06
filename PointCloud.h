@@ -18,7 +18,7 @@ using namespace std;
 class PointCloud {
 public:
     int loadPointsFromFile(string fileName);
-    std::vector<Point3D*> points;
+    std::vector<Point3D> points;
     Point3D center;
     Point3D boundingBoxMin;
     Point3D boundingBoxMax;

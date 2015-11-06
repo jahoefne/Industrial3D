@@ -3,6 +3,7 @@
 
 #include <iostream>   //for making output text to the console with "cout"
 #include "PointCloud.h"
+#include "K3DTree.h"
 
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -26,7 +27,7 @@ void display(void) {
 
     glBegin(GL_POINTS);
     for (int i = 0; i < cloud->points.size(); ++i) {
-        glVertex3d(cloud->points[i]->x, cloud->points[i]->y, cloud->points[i]->z);
+        glVertex3d(cloud->points[i].x, cloud->points[i].y, cloud->points[i].z);
     }
     glEnd();
 
@@ -80,7 +81,13 @@ void setupCamera() {
 }
 
 int main(int argc, char **argv) {
-    cloud->loadPointsFromFile("PUT ABSOLUTE PATH OF SOURCE HERE!");
+
+    cloud->loadPointsFromFile("/Users/moe/Desktop/Industrial3D/data/bunny.xyz");
+
+    K3DTree* tree = new K3DTree(cloud);
+
+
+    /** Set up glut/glew foo */
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(width, height);
