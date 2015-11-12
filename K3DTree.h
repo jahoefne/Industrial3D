@@ -53,11 +53,67 @@ private:
         return child;
     }
 
+    // created by Marleen on 11/11/2015
+
+    // This function only returns nodes right now! It should be changed, so it returns point3D!
+    KDNode* regSearch(Point3D *center, KDNode *currentNode, int radius){
+
+        if(currentNode->left == NULL && currentNode->right == NULL) {
+            // if the node is a leaf test if it is in range
+            if (currentNode->ptrFirstPoint->distanceTo(*center) <= radius) {
+                return currentNode;
+            }
+            else return NULL;
+        }
+        else if(currentNode->left->ptrFirstPoint->distanceTo(*center)<= radius &&
+                currentNode->left->ptrLastPoint->distanceTo(*center) <=radius)
+        {// return Subtree of left child
+            return currentNode->left;
+        }
+        else if(currentNode->left->ptrLastPoint->distanceTo(*center) <= radius)// else if region of left child intersects range)
+        {// recursion on subtree containing left child
+            regSearch(center, currentNode->left, radius);
+        }
+        else if(currentNode->right->ptrFirstPoint->distanceTo(*center) <= radius &&
+                currentNode->right->ptrLastPoint->distanceTo(*center) <= radius)
+        {
+            //return subtree of right child
+            return currentNode->right;
+        }
+        else if(currentNode->right->ptrFirstPoint->distanceTo(*center) <= radius){
+            // else if region of right child intersects range
+            //recursion on subtree containing right child
+            regSearch(center, currentNode->right, radius);}
+
+    }
+
 public:
+
+
     /** Constructor */
     K3DTree(PointCloud *cloud) {
         printf("Building KD Tree \n");
         this->root = this->recConstruct(&cloud->points[0], &cloud->points[cloud->points.size()], 0);
+    }
+};
+
+// Was going to use this, but ultimately didn't use it.
+class Bounds {
+public:
+    double xmin;
+    double xmax;
+    double ymin;
+    double ymax;
+    double zmin;
+    double zmax;
+
+    Bounds(Point3D *center, int radius) {
+        double xmin = center->x - radius;
+        double xmax = center->x + radius;
+        double ymin = center->y - radius;
+        double ymax = center->y + radius;
+        double zmin = center->z - radius;
+        double zmax = center->z + radius;
     }
 };
 
