@@ -19,7 +19,8 @@ public:
 };
 
 class K3DTree {
-private:
+public:
+    std::vector<Point3D> points_range;
     KDNode *root;
 
     /** Recursive construction method */
@@ -53,22 +54,75 @@ private:
         return child;
     }
 
-    // created by Marleen on 11/11/2015
+    //created by Rene
+    //reportSubTree, which traverses the subtree rooted at the node and reports all the stored at its leaves.
+  //  void reportSubTree(KDNode *currentNode){
+        //if v is a leaf
+   //     if(currentNode->left == NULL && currentNode->right == NULL) {
+            // We display the points in his leaf , last point and first point are the same, so every leaf store a point
+            // from the bunny.xyz
+           // currentNode->ptrLastPoint->printpoint();
+   //         printf("Printing coordinate x %lf \n", currentNode->ptrLastPoint->x);
+    //        printf("Printing coordinate y %lf \n", currentNode->ptrLastPoint->y);
+    //        printf("Printing coordinate z %lf \n", currentNode->ptrLastPoint->z);
+    //    }else{
 
+     //       if(currentNode->right != NULL) {
+     //           reportSubTree(currentNode->right);
+      //      }
+            //Recurse on left subtree
+     //       if(currentNode->left != NULL) {
+     //           reportSubTree(currentNode->left);
+     //       }
+
+//        }
+
+//    }
+
+
+//reportSubTree, which traverses the subtree rooted at the node and reports all the stored at its leaves.
+    void reportSubTree(KDNode *currentNode){
+        if(currentNode->left == NULL && currentNode->right == NULL) {
+            Point3D* point = new Point3D(currentNode->ptrLastPoint->x, currentNode->ptrLastPoint->y, currentNode->ptrLastPoint->z);
+            points_range.push_back(*point);
+            printf("Printing coordinate x %lf \n", currentNode->ptrLastPoint->x);
+            printf("Printing coordinate y %lf \n", currentNode->ptrLastPoint->y);
+            printf("Printing coordinate z %lf \n", currentNode->ptrLastPoint->z);
+
+
+        }else{
+            if (currentNode->right != NULL){
+                reportSubTree(currentNode->right);
+
+            }else{
+                return;
+            }
+            if (currentNode->left != NULL){
+                reportSubTree(currentNode->left);
+            }else{
+                return;
+            }
+        }
+
+    }
+
+
+    // created by Marleen on 11/11/2015 and Rene
     // This function only returns nodes right now! It should be changed, so it returns point3D!
-    KDNode* regSearch(Point3D *center, KDNode *currentNode, int radius){
+    void regSearch(Point3D *center, KDNode *currentNode, double radius){
 
         if(currentNode->left == NULL && currentNode->right == NULL) {
             // if the node is a leaf test if it is in range
             if (currentNode->ptrFirstPoint->distanceTo(*center) <= radius) {
-                return currentNode;
-            }
-            else return NULL;
+                points_range.push_back(*(currentNode->ptrFirstPoint));
+                return;
+            }else return;
         }
         else if(currentNode->left->ptrFirstPoint->distanceTo(*center)<= radius &&
                 currentNode->left->ptrLastPoint->distanceTo(*center) <=radius)
         {// return Subtree of left child
-            return currentNode->left;
+            reportSubTree(currentNode->left);
+            return;
         }
         else if(currentNode->left->ptrLastPoint->distanceTo(*center) <= radius)// else if region of left child intersects range)
         {// recursion on subtree containing left child
@@ -78,42 +132,22 @@ private:
                 currentNode->right->ptrLastPoint->distanceTo(*center) <= radius)
         {
             //return subtree of right child
-            return currentNode->right;
+            reportSubTree(currentNode->right);
+            return;
         }
         else if(currentNode->right->ptrFirstPoint->distanceTo(*center) <= radius){
             // else if region of right child intersects range
             //recursion on subtree containing right child
             regSearch(center, currentNode->right, radius);}
-
+        return;
     }
 
+
 public:
-
-
     /** Constructor */
     K3DTree(PointCloud *cloud) {
         printf("Building KD Tree \n");
         this->root = this->recConstruct(&cloud->points[0], &cloud->points[cloud->points.size()], 0);
-    }
-};
-
-// Was going to use this, but ultimately didn't use it.
-class Bounds {
-public:
-    double xmin;
-    double xmax;
-    double ymin;
-    double ymax;
-    double zmin;
-    double zmax;
-
-    Bounds(Point3D *center, int radius) {
-        double xmin = center->x - radius;
-        double xmax = center->x + radius;
-        double ymin = center->y - radius;
-        double ymax = center->y + radius;
-        double zmin = center->z - radius;
-        double zmax = center->z + radius;
     }
 };
 
