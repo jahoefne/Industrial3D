@@ -9,11 +9,19 @@
 
 class Point3D {
 public:
-    double x, y, z;
+    double x = 0.0, y = 0.0, z = 0.0;
+    int r = 0, g = 0, b = 0;
 
+    /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
-    Point3D() : x(0), y(0), z(0) { }
 
+    void setColor(int r, int g, int b){
+        this->r=r;
+        this->g=g;
+        this->b=b;
+    }
+
+    /** Move this point by another point */
     void translate(Point3D* dst) {
         x += dst->x;
         y += dst->y;
