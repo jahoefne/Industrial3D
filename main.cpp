@@ -6,11 +6,17 @@
 #include "K3DTree.h"
 
 #include <GL/glew.h>
-#include <GL/glut.h>
+
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#elif defined _WIN32 || defined _WIN64
+#include <GL\glut.h>
+#endif
 
 
 using namespace std;
-K3DTree* tree;
+K3DTree *tree;
 PointCloud *cloud = new PointCloud();
 
 int height = 768;
@@ -41,8 +47,6 @@ void display(void) {
     */
     glutSwapBuffers();
 }
-
-
 
 
 void keys(int key, int x, int y) {
@@ -88,24 +92,24 @@ int main(int argc, char **argv) {
 
     cloud->loadPointsFromFile("/home/rene/NetBeansProjects/Industrial3D/data/bunny.xyz");
     tree = new K3DTree(cloud);
-    KDNode* node;
-    node=tree->root;
-    Point3D* point = new Point3D(cloud->center.x,cloud->center.y,cloud->center.z);
-    tree->regSearch(point,node,10);
+    KDNode *node;
+    node = tree->root;
+    Point3D *point = new Point3D(cloud->center.x, cloud->center.y, cloud->center.z);
+    tree->regSearch(point, node, 10);
 
-  //  for (unsigned long i = 0; i < tree->points_range.size(); i++) {
-  //      Point3D* p = &tree->points_range.at(i);
-  //      std::cout << "(" << p->x << ", " << p->y << ", " << p->z << ")\n";
-  //  }
+    //  for (unsigned long i = 0; i < tree->points_range.size(); i++) {
+    //      Point3D* p = &tree->points_range.at(i);
+    //      std::cout << "(" << p->x << ", " << p->y << ", " << p->z << ")\n";
+    //  }
 
 
-   // printf("point range size %lu \n",tree->points_range.size());
-   // for (int i = 0; i < tree->points_range.size(); ++i) {
+    // printf("point range size %lu \n",tree->points_range.size());
+    // for (int i = 0; i < tree->points_range.size(); ++i) {
     //    printf("holaaaaaaaaaaaaaaa \n");
     //    printf("Printing coordinate x %lf \n", tree->points_range[i].x);
     //    printf("Printing coordinate y %lf \n", tree->points_range[i].y);
     //    printf("Printing coordinate z %lf \n", tree->points_range[i].z);
-   // }
+    // }
 
 
     /** Set up glut/glew foo */
