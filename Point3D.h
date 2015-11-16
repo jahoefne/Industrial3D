@@ -10,7 +10,7 @@
 class Point3D {
 public:
     double x = 0.0, y = 0.0, z = 0.0;
-    int r = 0, g = 0, b = 0;
+    int r = 255, g = 255, b = 255;
 
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
