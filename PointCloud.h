@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include "Point3D.h"
+#include "K3DTree.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ class PointCloud {
 public:
     int loadPointsFromFile(string fileName);
     std::vector<Point3D> points;
+    K3DTree* kdTree;
     Point3D center;
     Point3D boundingBoxMin;
     Point3D boundingBoxMax;
