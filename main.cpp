@@ -7,8 +7,8 @@
 
 #include <GLUT/glut.h>
 
-#elif defined _WIN32 || defined _WIN64
-#include <GL\glut.h>
+#elif defined _WIN32 || defined _WIN64  || __linux__
+#include <GL/glut.h>
 #endif
 
 
