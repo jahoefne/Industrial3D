@@ -10,9 +10,10 @@
 class Point3D {
 public:
     double x = 0.0, y = 0.0, z = 0.0;
-    signed char b = (signed char) 255;
-    signed char g = (signed char) 255;
-    signed char r = (signed char) 255;
+
+    float r = 255.0;
+    float g = 255.0;
+    float b = 255.0;
 
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }

@@ -69,20 +69,16 @@ public:
         return child;
     }
 
-
-    std::vector<Point3D*>* closestNeighbours(Point3D tgt, int number){
+    Point3D* closestNeighbour(Point3D tgt){
         return NULL;
     }
 
 
 private:
 
-
-    std::vector<Point3D*>* recClosestNeighbours(Point3D tgt, int number){
+    Point3D* recClosestNeighbour(Point3D* tgt){
         return NULL;
     }
-
-
 
 /*
     //created by Rene
@@ -169,9 +165,6 @@ private:
         }
         return;
     }*/
-
-
-
 };
 
 #endif //INDUSTRIAL3D_K3DTREE_H

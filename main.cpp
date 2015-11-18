@@ -1,4 +1,8 @@
 #include "PointCloud.h"
+#include "K3DTree.h"
+
+#include <GL/glew.h>
+
 
 #ifdef __APPLE__
 
@@ -22,7 +26,7 @@ void display(void) {
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
         for (int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
-            glColor3b(pt.r, pt.g, pt.b);
+            glColor3f(pt.r, pt.g, pt.b);
             glVertex3d(pt.x, pt.y, pt.z);
         }
     });
@@ -94,9 +98,13 @@ int main(int argc, char **argv) {
     setupCamera();
 
     glutDisplayFunc(display);
+
     glutMouseFunc(mouse);
     glutMotionFunc(mouseDrag);
     glutSpecialFunc(keys);
+
+    glewInit();
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
