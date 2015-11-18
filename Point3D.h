@@ -36,9 +36,9 @@ public:
 
     /** Change Color for this point */
     void green() {
-        r = 0;
-        b = 0;
-        g = 255;
+        r = 255;
+        b = 25;
+        g = 25;
     }
 
     double distanceTo(Point3D pt) {

@@ -87,12 +87,11 @@ int main(int argc, char **argv) {
     Point3D* pt = &initialCloud->points.front();
     pt->green();
 
-    std::vector<Point3D*>* neighbors = initialCloud->kdTree->findRadiusNeighbors(pt,2);
+    std::vector<Point3D*>* neighbors = initialCloud->kdTree->findRadiusNeighbors(pt,0.4);
 
     printf("Neighbors %lu", neighbors->size());
     for_each(neighbors->begin(),neighbors->end(), [](Point3D* pt){
         pt->highlight();
-        printf("Foo");
     });
 
     clouds.push_back(initialCloud);
