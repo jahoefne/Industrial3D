@@ -70,19 +70,32 @@ public:
 
 
     Point3D *closestNeighbour(Point3D *tgt) {
-        return recClosestNeighbour(tgt, root, X_AXIS);
+        Point3D* close = recClosestNeighbour(tgt, root, X_AXIS);
+        printf("\nClose point is %lf %lf %lf", close->x, close->y, close->z);
+        close->r=200; close->g=200;
+
+        double distance = close->distance3d(tgt);
+        printf("\n\tthe distance from our query point is %lf ",distance);
+
+        std::vector<Point3D*>* evenCloser = findRadiusNeighbors(tgt, distance);
+        printf("\nRange query on the distance of our close point. There are %lu points even closer" , evenCloser->size());
+
+        std::sort(evenCloser->begin(), evenCloser->end(),
+                  [&](Point3D *a, Point3D *b) -> bool { return tgt->distance3d(a) < tgt->distance3d(b); });
+
+        Point3D* closest = evenCloser->front();
+        printf("\n\tthe Point with the closest distance from our query point is %lf away",tgt->distance3d(closest));
+        return closest;
     }
 
     std::vector<Point3D*>* findRadiusNeighbors(Point3D* queryPoint, double radius){
         std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
-        printf("Find radius neighbour");
         findRadiusNeighborsRec(root, queryPoint, radius, neighbors, 0);
         return neighbors;
     }
 
     std::vector<Point3D*>* findRange(Point3D* min, Point3D* max){
         std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
-        printf("Find range neighbour %lf %lf %lf",max->x, max->y, max->z);
         findRangeRec(root, min, max, neighbors, 0);
         return neighbors;
     }
@@ -180,92 +193,6 @@ private:
         }
         return curr->ptrFirstPoint;
     }
-
-/*
-    //created by Rene
-    //reportSubTree, which traverses the subtree rooted at the node and reports all the stored at its leaves.
-    //  void reportSubTree(KDNode *currentNode){
-    //if v is a leaf
-    //     if(currentNode->left == NULL && currentNode->right == NULL) {
-    // We display the points in his leaf , last point and first point are the same, so every leaf store a point
-    // from the bunny.xyz
-    // currentNode->ptrLastPoint->printpoint();
-    //         printf("Printing coordinate x %lf \n", currentNode->ptrLastPoint->x);
-    //        printf("Printing coordinate y %lf \n", currentNode->ptrLastPoint->y);
-    //        printf("Printing coordinate z %lf \n", currentNode->ptrLastPoint->z);
-    //    }else{
-    //       if(currentNode->right != NULL) {
-    //           reportSubTree(currentNode->right);
-    //      }
-    //Recurse on left subtree
-    //       if(currentNode->left != NULL) {
-    //           reportSubTree(currentNode->left);
-    //       }
-//        }
-    //    }
-    */
-/*
-    //reportSubTree, which traverses the subtree rooted at the node and reports all the stored at its leaves.
-    void reportSubTree(KDNode *currentNode) {
-        if (currentNode->left == NULL && currentNode->right == NULL) {
-            Point3D *point = new Point3D(currentNode->ptrLastPoint->x, currentNode->ptrLastPoint->y,
-                                         currentNode->ptrLastPoint->z);
-            points_range.push_back(*point);
-            printf("Printing coordinate x %lf \n", currentNode->ptrLastPoint->x);
-            printf("Printing coordinate y %lf \n", currentNode->ptrLastPoint->y);
-            printf("Printing coordinate z %lf \n", currentNode->ptrLastPoint->z);
-
-
-        } else {
-            if (currentNode->right != NULL) {
-                reportSubTree(currentNode->right);
-
-            } else {
-                return;
-            }
-            if (currentNode->left != NULL) {
-                reportSubTree(currentNode->left);
-            } else {
-                return;
-            }
-        }
-
-    }*/
-/*
-    // created by Marleen on 11/11/2015 and Rene
-    // This function only returns nodes right now! It should be changed, so it returns point3D!
-    void regSearch(Point3D *center, KDNode *currentNode, double radius) {
-
-        if (currentNode->left == NULL && currentNode->right == NULL) {
-            // if the node is a leaf test if it is in range
-            if (currentNode->ptrFirstPoint->distanceTo(*center) <= radius) {
-                points_range.push_back(*(currentNode->ptrFirstPoint));
-                return;
-            } else return;
-        }
-        else if (currentNode->left->ptrFirstPoint->distanceTo(*center) <= radius &&
-                 currentNode->left->ptrLastPoint->distanceTo(*center) <= radius) {// return Subtree of left child
-            reportSubTree(currentNode->left);
-            return;
-        }
-        else if (currentNode->left->ptrLastPoint->distanceTo(*center) <=
-                 radius)// else if region of left child intersects range)
-        {// recursion on subtree containing left child
-            regSearch(center, currentNode->left, radius);
-        }
-        else if (currentNode->right->ptrFirstPoint->distanceTo(*center) <= radius &&
-                 currentNode->right->ptrLastPoint->distanceTo(*center) <= radius) {
-            //return subtree of right child
-            reportSubTree(currentNode->right);
-            return;
-        }
-        else if (currentNode->right->ptrFirstPoint->distanceTo(*center) <= radius) {
-            // else if region of right child intersects range
-            //recursion on subtree containing right child
-            regSearch(center, currentNode->right, radius);
-        }
-        return;
-    }*/
 };
 
 #endif //INDUSTRIAL3D_K3DTREE_H
