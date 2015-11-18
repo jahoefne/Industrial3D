@@ -8,7 +8,7 @@
 #include <GLUT/glut.h>
 
 #elif defined _WIN32 || defined _WIN64
-#include <GL\glut.h>
+#include <GL/glut.h>
 #endif
 
 
@@ -84,12 +84,12 @@ int main(int argc, char **argv) {
     initialCloud->loadPointsFromFile("../data/cone.xyz");
 
     /** Neighbour test */
-    Point3D *pt = &initialCloud->points.front();
-    pt->highlight();
+    Point3D *pt = new Point3D(-1.79, 0.8, 1.381);//&initialCloud->points.front();
+    //   pt->highlight();
 
     Point3D *closest = initialCloud->kdTree->closestNeighbour(pt);
     closest->highlight();
-    printf("\nPt: %lf, %lf, %lf", pt->x,pt->y,pt->z);
+    printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
     printf("\nFound: %lf, %lf, %lf", closest->x,closest->y,closest->z);
 
     /*
