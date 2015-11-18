@@ -84,20 +84,28 @@ int main(int argc, char **argv) {
     initialCloud->loadPointsFromFile("../data/cone.xyz");
 
     /** Neighbour test */
-    Point3D* pt = &initialCloud->points.front();
-    pt->green();
+    Point3D *pt = &initialCloud->points.front();
+    pt->highlight();
 
-    std::vector<Point3D*>* neighbors = initialCloud->kdTree->findRadiusNeighbors(pt,0.4);
+    Point3D *closest = initialCloud->kdTree->closestNeighbour(pt);
+    closest->highlight();
+    printf("\nPt: %lf, %lf, %lf", pt->x,pt->y,pt->z);
+    printf("\nFound: %lf, %lf, %lf", closest->x,closest->y,closest->z);
+
+    /*
+    Point3D *max = new Point3D(pt->x, pt->y, pt->z);
+    max->translate(new Point3D(1.8, 1.8, 1.8));
+    Point3D *min = new Point3D(pt->x, pt->y, pt->z);
+    min->translate(new Point3D(-1.8, -1.8, -1.8));
+
+    std::vector<Point3D *> *neighbors = initialCloud->kdTree->findRange(min, max);
 
     printf("Neighbors %lu", neighbors->size());
-    for_each(neighbors->begin(),neighbors->end(), [](Point3D* pt){
+    for_each(neighbors->begin(), neighbors->end(), [](Point3D *pt) {
         pt->highlight();
     });
-
+     */
     clouds.push_back(initialCloud);
-
-
-
 
     glutInit(&argc, argv);
 
@@ -116,7 +124,7 @@ int main(int argc, char **argv) {
     glutMotionFunc(mouseDrag);
     glutSpecialFunc(keys);
 
-   // glewInit();
+    // glewInit();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
