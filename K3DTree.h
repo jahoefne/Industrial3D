@@ -65,18 +65,61 @@ public:
             child->left = this->recConstruct(begin, begin + medianPosition, depth + 1);
             child->right = this->recConstruct(begin + medianPosition, end, depth + 1);
         }
-
         return child;
     }
 
+    /*
     Point3D *closestNeighbour(Point3D *tgt) {
-        return recClosestNeighbour(tgt, root, X_AXIS);
-    }
+        return recClosestNeighbour(tgt, root, X_AXIS, root->ptrFirstPoint);
+    }*/
 
+    std::vector<Point3D*>* findRadiusNeighbors(Point3D* queryPoint, double radius){
+        std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
+        printf("Find radius neighbour");
+        findRadiusNeighborsRec(root, queryPoint, radius, neighbors, 0);
+        return neighbors;
+    }
 
 private:
 
-    Point3D *recClosestNeighbour(Point3D *tgt, KDNode *curr, int dim) {
+    void findRadiusNeighborsRec(KDNode* node, Point3D* queryPoint, double radius, std::vector<Point3D*>* neighbors, unsigned int depth)
+    {
+        printf("\nrec");
+        if (node->left == node->right) // if this is true the node is a leaf
+        {
+            Point3D* pt = node->ptrFirstPoint;
+
+            // We don't use the expensive sqrt-function but instead compare the squared values
+            const double sqDistance = pt->sqDistance3d(queryPoint); // squared distance
+            if (sqDistance > (radius*radius)) return; // point outside the sphere
+
+            printf("   Pushing");
+            neighbors->push_back(node->ptrFirstPoint);
+        }
+        else
+        {
+            const unsigned int DIM = depth % 3;
+            double v_min, v_max;
+            if (DIM == 0){
+                v_min = queryPoint->x - radius;
+                v_max = queryPoint->x + radius;
+            }
+            else if (DIM == 1){
+                v_min = queryPoint->y - radius;
+                v_max = queryPoint->y + radius;
+            }
+            else{
+                v_min = queryPoint->z - radius;
+                v_max = queryPoint->z + radius;
+            }
+
+            if (v_min <= node->median) findRadiusNeighborsRec(node->left , queryPoint, radius, neighbors, depth + 1);
+            if (v_max  > node->median) findRadiusNeighborsRec(node->right, queryPoint, radius, neighbors, depth + 1);
+        }
+    }
+
+/*
+    Point3D *recClosestNeighbour(Point3D *tgt, KDNode *curr, int dim, Point3D *currBest) {
         double value = 0;
         switch (dim % 3) {
             case X_AXIS:
@@ -92,12 +135,14 @@ private:
                 printf("Should never happen");
                 return NULL;
         }
-        if (curr->median < value)
-            return (curr->left != NULL) ? recClosestNeighbour(tgt, curr->left, dim + 1) : curr->ptrFirstPoint;
-        else{
-            return (curr->right!=NULL) ? recClosestNeighbour(tgt, curr->right, dim + 1) : curr->ptrFirstPoint;
+        if (curr->median < value && curr->left != NULL) {
+            recClosestNeighbour(tgt, curr->left, dim + 1, curr->ptrFirstPoint);
+        } else if (curr->right != NULL) {
+            return recClosestNeighbour(tgt, curr->right, dim + 1, curr->ptrFirstPoint);
         }
-    }
+        return (curr->ptrFirstPoint != NULL && curr->ptrFirstPoint != tgt) ? curr->ptrFirstPoint : currBest;
+    }*/
+
 
 /*
     //created by Rene

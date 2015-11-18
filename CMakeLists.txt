@@ -23,7 +23,7 @@ find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 #include_directories(${Qt5Widgets_INCLUDES})
-add_definitions(${Qt5Widgets_DEFINITIONS})
+#add_definitions(${Qt5Widgets_DEFINITIONS})
 
 add_executable(Industrial3D ${SOURCE_FILES})
 

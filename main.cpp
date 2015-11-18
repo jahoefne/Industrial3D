@@ -81,17 +81,19 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("test.xyz");
+    initialCloud->loadPointsFromFile("../data/cone.xyz");
 
     /** Neighbour test */
     Point3D* pt = &initialCloud->points.front();
-    pt->highlight();
-    printf("\npt: %lf %lf %lf", pt->x, pt->y, pt->z);
+    pt->green();
 
+    std::vector<Point3D*>* neighbors = initialCloud->kdTree->findRadiusNeighbors(pt,2);
 
-    Point3D* nearest = initialCloud->kdTree->closestNeighbour(pt);
-    printf("\nnearest: %lf %lf %lf", nearest->x, nearest->y, nearest->z);
-    nearest->highlight();
+    printf("Neighbors %lu", neighbors->size());
+    for_each(neighbors->begin(),neighbors->end(), [](Point3D* pt){
+        pt->highlight();
+        printf("Foo");
+    });
 
     clouds.push_back(initialCloud);
 

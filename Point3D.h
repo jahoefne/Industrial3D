@@ -34,10 +34,30 @@ public:
         g = 0;
     }
 
+    /** Change Color for this point */
+    void green() {
+        r = 0;
+        b = 0;
+        g = 255;
+    }
+
     double distanceTo(Point3D pt) {
         double d = std::sqrt(sqr(this->x - pt.x) + sqr(this->y - pt.y) + sqr(this->z - pt.z));
         return d;
     }
+
+    double sqDistance3d(Point3D* pt)
+    {
+        const double d = sqr(x - pt->x) + sqr(y - pt->y) + sqr(z - pt->z);
+        return d;
+    }
+
+    double distance3d(Point3D* pt)
+    {
+        const double d = std::sqrt(sqDistance3d(pt));
+        return d;
+    }
+
 
 private:
     double sqr(const double &value) {
