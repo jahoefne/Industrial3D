@@ -14,7 +14,6 @@ void PointCloud::print() {
     }
 };
 
-
 /**
  * Initializes the points vector and the kdtree representation from a .xyz ascii file.
  * Returns 0 if successful and != 0 if an error occured
@@ -52,7 +51,7 @@ int PointCloud::loadPointsFromFile(std::string fileName) {
         cout << "Read file " << fileName << " it contained " <<  this->points.size() << "points.\n";
         pointFile.close();
 
-        this->kdTree->K3DTree(this); // Init Kd-Tree
+        kdTree = new K3DTree(&this->points); // Init Kd-Tree
         return 0;
     } else {
         std::cout << "Can't read file!" << strerror(errno);;

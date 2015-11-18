@@ -1,7 +1,3 @@
-//
-// Created by Jan Moritz Hoefner on 23/10/15.
-//
-
 #ifndef INDUSTRIAL3D_POINTCLOUD_H
 #define INDUSTRIAL3D_POINTCLOUD_H
 
@@ -18,6 +14,9 @@ using namespace std;
 
 class PointCloud {
 public:
+    PointCloud(){
+
+    };
     int loadPointsFromFile(string fileName);
     std::vector<Point3D> points;
     K3DTree* kdTree;

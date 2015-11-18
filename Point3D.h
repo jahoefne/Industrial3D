@@ -10,22 +10,26 @@
 class Point3D {
 public:
     double x = 0.0, y = 0.0, z = 0.0;
-    int r = 255, g = 255, b = 255;
+    signed char b = (signed char) 255;
+    signed char g = (signed char) 255;
+    signed char r = (signed char) 255;
 
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
-
-    void setColor(int r, int g, int b){
-        this->r=r;
-        this->g=g;
-        this->b=b;
-    }
+    Point3D() : x(0), y(0), z(0) { }
 
     /** Move this point by another point */
     void translate(Point3D* dst) {
         x += dst->x;
         y += dst->y;
         z += dst->z;
+    }
+
+    /** Change Color for this point */
+    void highlight(){
+        r = (signed char) 255;
+        b = (signed char) 0;
+        g = (signed char) 0;
     }
 
     double distanceTo(Point3D pt){
