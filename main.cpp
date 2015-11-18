@@ -3,7 +3,6 @@
 
 #include <GL/glew.h>
 
-
 #ifdef __APPLE__
 
 #include <GLUT/glut.h>
@@ -21,7 +20,7 @@ void display(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
 
-    glPointSize(1);
+    glPointSize(2);
     glBegin(GL_POINTS);
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
         for (int i = 0; i < cloud->points.size(); ++i) {
@@ -82,9 +81,20 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("bunny.xyz");
+    initialCloud->loadPointsFromFile("test.xyz");
+
+    /** Neighbour test */
+    Point3D* pt = &initialCloud->points.front();
+    pt->highlight();
+    printf("\npt: %lf %lf %lf", pt->x, pt->y, pt->z);
+
+
+    Point3D* nearest = initialCloud->kdTree->closestNeighbour(pt);
+    printf("\nnearest: %lf %lf %lf", nearest->x, nearest->y, nearest->z);
+    nearest->highlight();
 
     clouds.push_back(initialCloud);
+
 
     glutInit(&argc, argv);
 
@@ -103,7 +113,7 @@ int main(int argc, char **argv) {
     glutMotionFunc(mouseDrag);
     glutSpecialFunc(keys);
 
-    glewInit();
+   // glewInit();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

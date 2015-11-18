@@ -17,30 +17,31 @@ public:
 
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
+
     Point3D() : x(0), y(0), z(0) { }
 
     /** Move this point by another point */
-    void translate(Point3D* dst) {
+    void translate(Point3D *dst) {
         x += dst->x;
         y += dst->y;
         z += dst->z;
     }
 
     /** Change Color for this point */
-    void highlight(){
-        r = (signed char) 255;
-        b = (signed char) 0;
-        g = (signed char) 0;
+    void highlight() {
+        r = 255;
+        b = 0;
+        g = 0;
     }
 
-    double distanceTo(Point3D pt){
-        double d = std::sqrt( sqr(this->x - pt.x) + sqr(this->y - pt.y) + sqr(this->z - pt.z) );
+    double distanceTo(Point3D pt) {
+        double d = std::sqrt(sqr(this->x - pt.x) + sqr(this->y - pt.y) + sqr(this->z - pt.z));
         return d;
     }
 
 private:
-    double sqr(const double& value){
-        return value*value;
+    double sqr(const double &value) {
+        return value * value;
     }
 };
 

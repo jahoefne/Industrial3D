@@ -69,15 +69,34 @@ public:
         return child;
     }
 
-    Point3D* closestNeighbour(Point3D tgt){
-        return NULL;
+    Point3D *closestNeighbour(Point3D *tgt) {
+        return recClosestNeighbour(tgt, root, X_AXIS);
     }
 
 
 private:
 
-    Point3D* recClosestNeighbour(Point3D* tgt){
-        return NULL;
+    Point3D *recClosestNeighbour(Point3D *tgt, KDNode *curr, int dim) {
+        double value = 0;
+        switch (dim % 3) {
+            case X_AXIS:
+                value = tgt->x;
+                break;
+            case Y_AXIS:
+                value = tgt->y;
+                break;
+            case Z_AXIS:
+                value = tgt->z;
+                break;
+            default:
+                printf("Should never happen");
+                return NULL;
+        }
+        if (curr->median < value)
+            return (curr->left != NULL) ? recClosestNeighbour(tgt, curr->left, dim + 1) : curr->ptrFirstPoint;
+        else{
+            return (curr->right!=NULL) ? recClosestNeighbour(tgt, curr->right, dim + 1) : curr->ptrFirstPoint;
+        }
     }
 
 /*
