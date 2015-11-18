@@ -15,8 +15,8 @@
 class KDNode {
 public:
     double median;
-    KDNode *left;
-    KDNode *right;
+    KDNode *left = nullptr;
+    KDNode *right = nullptr;
     Point3D *ptrFirstPoint;
     Point3D *ptrLastPoint;
 };
@@ -40,15 +40,15 @@ public:
 
         switch (depth % 3) {
             case X_AXIS:
-                std::sort(begin, end, [](const Point3D &a, const Point3D &b) -> bool { return a.x > b.x; });
+                std::sort(begin, end, [](const Point3D &a, const Point3D &b) -> bool { return a.x < b.x; });
                 medianValue = (begin + medianPosition)->x;
                 break;
             case Y_AXIS:
-                std::sort(begin, end, [](const Point3D &a, const Point3D &b) -> bool { return a.y > b.y; });
+                std::sort(begin, end, [](const Point3D &a, const Point3D &b) -> bool { return a.y <  b.y; });
                 medianValue = (begin + medianPosition)->y;
                 break;
             case Z_AXIS:
-                std::sort(begin, end, [](const Point3D &a, const Point3D &b) -> bool { return a.z > b.z; });
+                std::sort(begin, end, [](const Point3D &a, const Point3D &b) -> bool { return a.z < b.z; });
                 medianValue = (begin + medianPosition)->z;
                 break;
             default:
@@ -84,7 +84,6 @@ private:
 
     void findRadiusNeighborsRec(KDNode* node, Point3D* queryPoint, double radius, std::vector<Point3D*>* neighbors, unsigned int depth)
     {
-        printf("\nrec");
         if (node->left == node->right) // if this is true the node is a leaf
         {
             Point3D* pt = node->ptrFirstPoint;
@@ -92,8 +91,6 @@ private:
             // We don't use the expensive sqrt-function but instead compare the squared values
             const double sqDistance = pt->sqDistance3d(queryPoint); // squared distance
             if (sqDistance > (radius*radius)) return; // point outside the sphere
-
-            printf("   Pushing");
             neighbors->push_back(node->ptrFirstPoint);
         }
         else
