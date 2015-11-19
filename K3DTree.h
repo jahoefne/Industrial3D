@@ -68,15 +68,22 @@ public:
         return child;
     }
 
-    /*
+
     Point3D *closestNeighbour(Point3D *tgt) {
-        return recClosestNeighbour(tgt, root, X_AXIS, root->ptrFirstPoint);
-    }*/
+        return recClosestNeighbour(tgt, root, X_AXIS);
+    }
 
     std::vector<Point3D*>* findRadiusNeighbors(Point3D* queryPoint, double radius){
         std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
         printf("Find radius neighbour");
         findRadiusNeighborsRec(root, queryPoint, radius, neighbors, 0);
+        return neighbors;
+    }
+
+    std::vector<Point3D*>* findRange(Point3D* min, Point3D* max){
+        std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
+        printf("Find range neighbour %lf %lf %lf",max->x, max->y, max->z);
+        findRangeRec(root, min, max, neighbors, 0);
         return neighbors;
     }
 
@@ -115,8 +122,42 @@ private:
         }
     }
 
-/*
-    Point3D *recClosestNeighbour(Point3D *tgt, KDNode *curr, int dim, Point3D *currBest) {
+    void findRangeRec(const KDNode* node, Point3D* min, Point3D* max, std::vector<Point3D*>* neighbors, unsigned int depth)
+    {
+        if (node->left == node->right) //if this is true the node is a leaf
+        {
+            const Point3D& pt=*node->ptrFirstPoint;
+            //a final check still must be done
+            if (pt.x < min->x || pt.x > max->x) return;
+            if (pt.y < min->y || pt.y > max->y) return;
+            if (pt.z < min->z || pt.z > max->z) return;
+
+            neighbors->push_back(node->ptrFirstPoint);
+        }
+        else
+        {
+            const unsigned int DIM=depth % 3;
+            double v_min, v_max;
+            if (DIM == X_AXIS){
+                v_min=min->x;
+                v_max=max->x;
+            }
+            else if(DIM == Y_AXIS){
+                v_min=min->y;
+                v_max=max->y;
+            }
+            else{
+                v_min=min->z;
+                v_max=max->z;
+            }
+
+            if (v_min <= node->median) findRangeRec(node->left, min, max, neighbors, depth+1);
+            if (v_max  > node->median) findRangeRec(node->right, min, max, neighbors, depth+1);
+        }
+    }
+
+
+    Point3D *recClosestNeighbour(Point3D *tgt, KDNode *curr, int dim) {
         double value = 0;
         switch (dim % 3) {
             case X_AXIS:
@@ -132,14 +173,13 @@ private:
                 printf("Should never happen");
                 return NULL;
         }
-        if (curr->median < value && curr->left != NULL) {
-            recClosestNeighbour(tgt, curr->left, dim + 1, curr->ptrFirstPoint);
+        if (curr->median > value && curr->left != NULL) {
+            recClosestNeighbour(tgt, curr->left, dim + 1);
         } else if (curr->right != NULL) {
-            return recClosestNeighbour(tgt, curr->right, dim + 1, curr->ptrFirstPoint);
+            return recClosestNeighbour(tgt, curr->right, dim + 1);
         }
-        return (curr->ptrFirstPoint != NULL && curr->ptrFirstPoint != tgt) ? curr->ptrFirstPoint : currBest;
-    }*/
-
+        return curr->ptrFirstPoint;
+    }
 
 /*
     //created by Rene
