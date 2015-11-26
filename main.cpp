@@ -7,7 +7,7 @@
 
 #include <GLUT/glut.h>
 
-#elif defined _WIN32 || defined _WIN64  || __linux__
+#elif defined _WIN32 || defined _WIN64 || defined __linux__
 #include <GL/glut.h>
 #endif
 
@@ -20,7 +20,7 @@ void display(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
 
-    glPointSize(2);
+    glPointSize(1);
     glBegin(GL_POINTS);
 
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
@@ -43,6 +43,7 @@ void mouse(int button, int state, int x, int y) {
     if (button == 0 && state == GLUT_DOWN) {
         xposStart = x;
         yposStart = y;
+
     }
 }
 
