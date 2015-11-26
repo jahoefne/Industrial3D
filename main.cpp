@@ -22,6 +22,7 @@ void display(void) {
 
     glPointSize(2);
     glBegin(GL_POINTS);
+
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
         for (int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
@@ -81,31 +82,44 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("../data/cone.xyz");
+    initialCloud->loadPointsFromFile("../data/angel.xyz",1,1,1);
+    PointCloud *cloud2 = new PointCloud();
+    cloud2->loadPointsFromFile("../data/angel2.xyz",1,0,0);
+    cloud2->translate(new Point3D(1.0,1.0,1.0));
+
+    Point3D *pt =  &initialCloud->points.front();
+    printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
+
+    pt = &cloud2->points.front();
+    printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
 
     /** Neighbour test */
-    Point3D *pt = &initialCloud->points.front();
-    pt->highlight();
-
+   // Point3D *pt = new Point3D(-1.79, 0.8, 1.381);
+ //   Point3D *pt =  &initialCloud->points.front();
+    //   pt->highlight();
+/*
     Point3D *closest = initialCloud->kdTree->closestNeighbour(pt);
     closest->highlight();
-    printf("\nPt: %lf, %lf, %lf", pt->x,pt->y,pt->z);
+    printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
     printf("\nFound: %lf, %lf, %lf", closest->x,closest->y,closest->z);
 
-    /*
-    Point3D *max = new Point3D(pt->x, pt->y, pt->z);
-    max->translate(new Point3D(1.8, 1.8, 1.8));
+*/
+ /*   Point3D *max = new Point3D(pt->x, pt->y, pt->z);
+    max->translate(new Point3D(0.8, 0.8, 0.8));
     Point3D *min = new Point3D(pt->x, pt->y, pt->z);
-    min->translate(new Point3D(-1.8, -1.8, -1.8));
+    min->translate(new Point3D(-0.8, -0.8, -0.8));
+*/
+   // std::vector<Point3D *> *neighbors = initialCloud->kdTree->findRange(min, max);
+   // std::vector<Point3D *> *neighbors = initialCloud->kdTree->findRadiusNeighbors(pt,0.5);
 
-    std::vector<Point3D *> *neighbors = initialCloud->kdTree->findRange(min, max);
-
-    printf("Neighbors %lu", neighbors->size());
+   /* printf("Neighbors %lu", neighbors->size());
     for_each(neighbors->begin(), neighbors->end(), [](Point3D *pt) {
         pt->highlight();
     });
-     */
+*/
+
     clouds.push_back(initialCloud);
+    clouds.push_back(cloud2);
 
     glutInit(&argc, argv);
 
