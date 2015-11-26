@@ -26,6 +26,12 @@ public:
         z += dst->z;
     }
 
+    /** A vector describing the difference between this and *dst */
+    Point3D *diffVector(Point3D *dst) {
+        return new Point3D(x - dst->x, y - dst->y, z - dst->z);
+    }
+
+
     /** Change Color for this point */
     void highlight() {
         r = 255;
@@ -45,14 +51,12 @@ public:
         return d;
     }
 
-    double sqDistance3d(Point3D* pt)
-    {
+    double sqDistance3d(Point3D *pt) {
         const double d = sqr(x - pt->x) + sqr(y - pt->y) + sqr(z - pt->z);
         return d;
     }
 
-    double distance3d(Point3D* pt)
-    {
+    double distance3d(Point3D *pt) {
         const double d = std::sqrt(sqDistance3d(pt));
         return d;
     }

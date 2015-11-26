@@ -26,6 +26,8 @@ public:
     double sceneRadius;
     void print();
     void translate(Point3D* point);
+
+    void alignTo(PointCloud* cloud);
 };
 
 

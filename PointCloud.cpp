@@ -75,3 +75,14 @@ void PointCloud::translate(Point3D *point) {
     kdTree = new K3DTree(&this->points); // Init Kd-Tree
 }
 
+void PointCloud::alignTo(PointCloud *cloud) {
+    vector<Point3D*> *vectorDiffs = nullptr;
+
+    for_each(points.begin(),points.end(), [&](Point3D pt){
+        Point3D* neighbour = cloud->kdTree->closestNeighbour(&pt);
+        Point3D* vec = pt.diffVector(neighbour);
+        vectorDiffs->push_back(vec);
+    });
+
+    printf("%d",vectorDiffs->size());
+}
