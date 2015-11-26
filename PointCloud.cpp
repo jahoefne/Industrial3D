@@ -9,7 +9,7 @@
 void PointCloud::print() {
     std::cout << "Read " << this->points.size();
     for (unsigned long i = 0; i < this->points.size(); i++) {
-        Point3D* p = &this->points.at(i);
+        Point3D *p = &this->points.at(i);
         std::cout << "(" << p->x << ", " << p->y << ", " << p->z << ")\n";
     }
 };
@@ -19,7 +19,7 @@ void PointCloud::print() {
  * Returns 0 if successful and != 0 if an error occured
  * Also calculates the center
  */
-int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float b){
+int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float b) {
     ifstream pointFile(fileName, ifstream::in);
     if (pointFile.is_open()) {
         double x, y, z;
@@ -27,10 +27,10 @@ int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float
         while (pointFile >> x && pointFile >> y && pointFile >> z) {
 
             // Read point from file
-            Point3D* point = new Point3D(x, y, z);
-            point->r=r;
-            point->g=g;
-            point->b=b;
+            Point3D *point = new Point3D(x, y, z);
+            point->r = r;
+            point->g = g;
+            point->b = b;
             points.push_back(*point);
 
             // consider point for center calculation
@@ -51,7 +51,7 @@ int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float
 
         this->sceneRadius = this->center.distanceTo(this->boundingBoxMax);
 
-        cout << "Read file " << fileName << " it contained " <<  this->points.size() << "points.\n";
+        cout << "Read file " << fileName << " it contained " << this->points.size() << "points.\n";
         pointFile.close();
 
         kdTree = new K3DTree(&this->points); // Init Kd-Tree
@@ -63,26 +63,43 @@ int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float
 };
 
 void PointCloud::translate(Point3D *point) {
-    for_each(points.begin(), points.end(), [&](Point3D pt){
-        pt.translate(point);});
-
-    for (Point3D & pt : points )
-    {
-        printf("\nOrigin: %lf, %lf, %lf", pt.x,pt.y,pt.z);
+    for_each(points.begin(), points.end(), [&](Point3D pt) {
         pt.translate(point);
-        printf("\n\tTranslated for: %lf, %lf, %lf", pt.x,pt.y,pt.z);
+    });
+
+    for (Point3D &pt : points) {
+        // printf("\nOrigin: %lf, %lf, %lf", pt.x,pt.y,pt.z);
+        pt.translate(point);
+        // printf("\n\tTranslated for: %lf, %lf, %lf", pt.x,pt.y,pt.z);
     }
     kdTree = new K3DTree(&this->points); // Init Kd-Tree
 }
 
+#define SAMPLE_SIZE  20
+
 void PointCloud::alignTo(PointCloud *cloud) {
-    vector<Point3D*> *vectorDiffs = nullptr;
+    vector<Point3D *> vectorDiffs;
+    long pointCount = points.size();
+    for (int i = 0; i < SAMPLE_SIZE; i++) {
+        Point3D* pt = &points[rand() % pointCount];
+        if (vectorDiffs.size() % 1000 == 0) printf("\n%ld", vectorDiffs.size());
+        Point3D *n = cloud->kdTree->closestNeighbour(pt);
+        pt->rgbSize(1,1,0,2);
+        pt->rgbSize(0,0,1,2);
+        vectorDiffs.push_back(pt->diffVector(n));
+    }
 
-    for_each(points.begin(),points.end(), [&](Point3D pt){
-        Point3D* neighbour = cloud->kdTree->closestNeighbour(&pt);
-        Point3D* vec = pt.diffVector(neighbour);
-        vectorDiffs->push_back(vec);
-    });
+    Point3D *avgVec = new Point3D();
+    for (Point3D *pt : vectorDiffs) {
+        avgVec->translate(pt);
+    }
 
-    printf("%d",vectorDiffs->size());
+    //printf("AvgVec: %f %f %f\n", avgVec->x, avgVec->y, avgVec->z);
+    avgVec->x = -(avgVec->x / (double) vectorDiffs.size());
+    avgVec->y = -(avgVec->y / (double) vectorDiffs.size());
+    avgVec->z = -(avgVec->z / (double) vectorDiffs.size());
+
+  //  printf("\tEstimated Translation necessary: %f %f %f\n", avgVec->x, avgVec->y, avgVec->z);
+    this->translate(avgVec);
+    fflush(stdout);
 }

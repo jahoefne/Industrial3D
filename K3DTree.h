@@ -71,20 +71,17 @@ public:
 
     Point3D *closestNeighbour(Point3D *tgt) {
         Point3D* close = recClosestNeighbour(tgt, root, X_AXIS);
-      //  printf("\nClose point is %lf %lf %lf", close->x, close->y, close->z);
-        //close->r=200; close->g=200;
-
         double distance = close->distance3d(tgt);
-      //  printf("\n\tthe distance from our query point is %lf ",distance);
 
-        std::vector<Point3D*>* evenCloser = findRadiusNeighbors(tgt, distance);
-     //   printf("\nRange query on the distance of our close point. There are %lu points even closer" , evenCloser->size());
+        std::vector<Point3D*> *evenCloser = new std::vector<Point3D*>();
+        findRadiusNeighborsRec(root, tgt, distance, evenCloser, 0);
 
         if(evenCloser->size()!=0) {
             std::sort(evenCloser->begin(), evenCloser->end(),
                       [&](Point3D *a, Point3D *b) -> bool { return tgt->distance3d(a) < tgt->distance3d(b); });
 
             Point3D *closest = evenCloser->front();
+            delete evenCloser;
             return closest;
         }else{
             return close;

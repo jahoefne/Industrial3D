@@ -13,6 +13,7 @@ public:
     float r = 1;
     float g = 1;
     float b = 1;
+    float size = 1;
 
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
@@ -31,10 +32,16 @@ public:
         return new Point3D(x - dst->x, y - dst->y, z - dst->z);
     }
 
+    void rgbSize(float r, float g, float b, float size) {
+        this->r = r;
+        this->g = g;
+        this->b = b;
+        this->size = size;
+    }
 
     /** Change Color for this point */
     void highlight() {
-        r = 255;
+        r = 1;
         b = 0;
         g = 0;
     }
