@@ -17,7 +17,7 @@ public:
     PointCloud(){
 
     };
-    int loadPointsFromFile(string fileName);
+    int loadPointsFromFile(std::string fileName, float r = 1, float g = 1, float b =1);
     std::vector<Point3D> points;
     K3DTree* kdTree;
     Point3D center;
@@ -25,6 +25,7 @@ public:
     Point3D boundingBoxMax;
     double sceneRadius;
     void print();
+    void translate(Point3D* point);
 };
 
 

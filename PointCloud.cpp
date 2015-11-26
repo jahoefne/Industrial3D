@@ -19,7 +19,7 @@ void PointCloud::print() {
  * Returns 0 if successful and != 0 if an error occured
  * Also calculates the center
  */
-int PointCloud::loadPointsFromFile(std::string fileName) {
+int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float b){
     ifstream pointFile(fileName, ifstream::in);
     if (pointFile.is_open()) {
         double x, y, z;
@@ -28,6 +28,9 @@ int PointCloud::loadPointsFromFile(std::string fileName) {
 
             // Read point from file
             Point3D* point = new Point3D(x, y, z);
+            point->r=r;
+            point->g=g;
+            point->b=b;
             points.push_back(*point);
 
             // consider point for center calculation
@@ -58,3 +61,17 @@ int PointCloud::loadPointsFromFile(std::string fileName) {
     }
     return -1;
 };
+
+void PointCloud::translate(Point3D *point) {
+    for_each(points.begin(), points.end(), [&](Point3D pt){
+        pt.translate(point);});
+
+    for (Point3D & pt : points )
+    {
+        printf("\nOrigin: %lf, %lf, %lf", pt.x,pt.y,pt.z);
+        pt.translate(point);
+        printf("\n\tTranslated for: %lf, %lf, %lf", pt.x,pt.y,pt.z);
+    }
+    kdTree = new K3DTree(&this->points); // Init Kd-Tree
+}
+

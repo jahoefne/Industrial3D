@@ -10,10 +10,9 @@
 class Point3D {
 public:
     double x = 0.0, y = 0.0, z = 0.0;
-
-    float r = 255.0;
-    float g = 255.0;
-    float b = 255.0;
+    float r = 1;
+    float g = 1;
+    float b = 1;
 
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
