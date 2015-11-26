@@ -71,21 +71,24 @@ public:
 
     Point3D *closestNeighbour(Point3D *tgt) {
         Point3D* close = recClosestNeighbour(tgt, root, X_AXIS);
-        printf("\nClose point is %lf %lf %lf", close->x, close->y, close->z);
-        close->r=200; close->g=200;
+      //  printf("\nClose point is %lf %lf %lf", close->x, close->y, close->z);
+        //close->r=200; close->g=200;
 
         double distance = close->distance3d(tgt);
-        printf("\n\tthe distance from our query point is %lf ",distance);
+      //  printf("\n\tthe distance from our query point is %lf ",distance);
 
         std::vector<Point3D*>* evenCloser = findRadiusNeighbors(tgt, distance);
-        printf("\nRange query on the distance of our close point. There are %lu points even closer" , evenCloser->size());
+     //   printf("\nRange query on the distance of our close point. There are %lu points even closer" , evenCloser->size());
 
-        std::sort(evenCloser->begin(), evenCloser->end(),
-                  [&](Point3D *a, Point3D *b) -> bool { return tgt->distance3d(a) < tgt->distance3d(b); });
+        if(evenCloser->size()!=0) {
+            std::sort(evenCloser->begin(), evenCloser->end(),
+                      [&](Point3D *a, Point3D *b) -> bool { return tgt->distance3d(a) < tgt->distance3d(b); });
 
-        Point3D* closest = evenCloser->front();
-        printf("\n\tthe Point with the closest distance from our query point is %lf away",tgt->distance3d(closest));
-        return closest;
+            Point3D *closest = evenCloser->front();
+            return closest;
+        }else{
+            return close;
+        }
     }
 
     std::vector<Point3D*>* findRadiusNeighbors(Point3D* queryPoint, double radius){
