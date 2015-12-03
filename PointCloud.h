@@ -28,6 +28,7 @@ public:
     void translate(Point3D* point);
 
     void alignTo(PointCloud* cloud);
+    PointCloud* smooth(double radius);
 };
 
 

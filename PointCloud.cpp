@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include "PointCloud.h"
+#include "K3DTree.h"
 
 
 void PointCloud::print() {
@@ -103,3 +104,49 @@ void PointCloud::alignTo(PointCloud *cloud) {
     this->translate(avgVec);
     fflush(stdout);
 }
+
+// This function smoothes a given PointCloud within a certain radius
+
+PointCloud* PointCloud::smooth(double radius)
+{
+    vector<Point3D *> neighbors;
+    vector<Point3D> smoothPoints = *(new vector<Point3D>());
+    Point3D weightedPoint;
+
+    double distance;
+
+    long Numpoints = points.size();
+    for(int i = 0; i < Numpoints; i++)
+    {
+        neighbors = *(kdTree->findRadiusNeighbors(&(points[i]),radius));
+
+        double weight = 0;
+        double weightsum=0;
+        weightedPoint = *(new Point3D());
+
+        for(unsigned int n= 0; n < neighbors.size(); n++)
+        {
+            distance = neighbors[n]->sqDistance3d(&(points[i])); // squared distance
+            weight = exp(-distance/radius); // calculate weight from distance
+            weightsum+=weight;
+
+            weightedPoint.x += weight*neighbors[n]->x; // apply weight to the point
+            weightedPoint.y += weight*neighbors[n]->y;
+            weightedPoint.z += weight*neighbors[n]->z;
+
+        }
+
+        weightedPoint.x = weightedPoint.x/weightsum; // normalize weighted point
+        weightedPoint.y = weightedPoint.y/weightsum;
+        weightedPoint.z = weightedPoint.z/weightsum;
+
+        smoothPoints.push_back(weightedPoint); // store weighted point
+
+   }
+    PointCloud *result = (new PointCloud());
+    result->points=smoothPoints;
+
+    return result;
+}
+
+
