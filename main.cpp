@@ -9,14 +9,6 @@
 
 #elif defined _WIN32 || defined _WIN64 || defined __linux__
 #include <GL/glut.h>
-#include <linux/input.h>
-#define EV_PRESSED 1
-#define EV_RELEASED 0
-#define EV_REPEAT 2
-
-#include <iostream>
-using std::cout;   // Specify only the functions you're going to use
-using std::cin;    // to cut down on file sizes
 #endif
 
 
@@ -31,8 +23,9 @@ void display(void) {
     glBegin(GL_POINTS);
 
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
-        for (unsigned int i = 0; i < cloud->points.size(); ++i) {
+        for (int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
+            printf("Color: %f %f %f",pt.r,pt.g,pt.b);
             glColor3f(pt.r, pt.g, pt.b);
             glPointSize(pt.size);
             glVertex3d(pt.x, pt.y, pt.z);
@@ -42,7 +35,7 @@ void display(void) {
     glutSwapBuffers();
 }
 
-/*void keys(int key, int x, int y) {
+void keys(int key, int x, int y) {
     if (key == 27 || key == 'q')
         exit(0);
 
@@ -50,21 +43,7 @@ void display(void) {
         clouds.front()->alignTo(clouds.back());
         glutPostRedisplay();
     }
-}*/
-
-void keyboard(unsigned char key, int x, int y)
-{
-
-    switch(key){
-    case 'a':
-        clouds.front()->alignTo(clouds.back());
-        glutPostRedisplay();
-        break;
-    }
-    printf("%c Key was pressed",key);
-    glutPostRedisplay();
 }
-
 
 void mouse(int button, int state, int x, int y) {
     if (button == 0 && state == GLUT_DOWN) {
@@ -109,16 +88,17 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("../data/cone.xyz", 1, 1, 1);
+    initialCloud->loadPointsFromFile("../data/cone.xyz", 0, 0, 0);
+   // initialCloud = initialCloud->smooth(1);
     PointCloud *cloud2 = new PointCloud();
+    cloud2 = initialCloud->smooth(1);
 
-    cloud2->loadPointsFromFile("../data/cone.xyz", 1, 0, 0);
-    cloud2->translate(new Point3D(5.0, 5.0, 5.0));
+    //cloud2->loadPointsFromFile("../data/angel2.xyz", 1, 0, 0);
+    //cloud2->translate(new Point3D(1.0, 1.0, 1.0));
 
     /*
     Point3D *pt =  &initialCloud->points.front();
     printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
-
     pt = &cloud2->points.front();
     printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
     */
@@ -132,7 +112,6 @@ int main(int argc, char **argv) {
     closest->highlight();
     printf("\nSearch for: %lf, %lf, %lf", pt->x,pt->y,pt->z);
     printf("\nFound: %lf, %lf, %lf", closest->x,closest->y,closest->z);
-
 */
     /*   Point3D *max = new Point3D(pt->x, pt->y, pt->z);
        max->translate(new Point3D(0.8, 0.8, 0.8));
@@ -148,11 +127,8 @@ int main(int argc, char **argv) {
      });
  */
 
-    //initialCloud->smooth(2);
-
-    clouds.push_back(initialCloud);
-    clouds.push_back(cloud2->smooth(0.00003));
-    //clouds.push_back(cloud2);
+      clouds.push_back(initialCloud);
+      clouds.push_back(cloud2);
 
     glutInit(&argc, argv);
 
@@ -169,13 +145,8 @@ int main(int argc, char **argv) {
 
     glutMouseFunc(mouse);
     glutMotionFunc(mouseDrag);
+    glutSpecialFunc(keys);
 
-//    glutSpecialFunc(keys);
-
-    glutKeyboardFunc(keyboard);
-
-    clouds.front()->alignTo(clouds.back());
-    glutPostRedisplay();
     // glewInit();
 
     glMatrixMode(GL_MODELVIEW);

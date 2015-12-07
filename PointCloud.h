@@ -17,6 +17,13 @@ public:
     PointCloud(){
 
     };
+
+
+
+
+
+
+    double maxAt(std::vector<double>& vector_name);
     int loadPointsFromFile(std::string fileName, float r = 1, float g = 1, float b =1);
     std::vector<Point3D> points;
     K3DTree* kdTree;
@@ -26,7 +33,7 @@ public:
     double sceneRadius;
     void print();
     void translate(Point3D* point);
-
+    Point3D* getcolor(Point3D* green, Point3D* yellow, Point3D* red,Point3D* final,float interpolation_factor);
     void alignTo(PointCloud* cloud);
     PointCloud* smooth(double radius);
 };

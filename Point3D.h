@@ -28,7 +28,7 @@ public:
     }
 
     /** A vector describing the difference between this and *dst */
-    Point3D *diffVector(Point3D *dst) {
+    Point3D* diffVector(Point3D *dst) {
         return new Point3D(x - dst->x, y - dst->y, z - dst->z);
     }
 
