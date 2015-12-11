@@ -10,13 +10,6 @@
 #include <climits>
 #include <cmath>
 
-void PointCloud::print() {
-    std::cout << "Read " << this->points.size();
-    for (unsigned long i = 0; i < this->points.size(); i++) {
-        Point3D *p = &this->points.at(i);
-        std::cout << "(" << p->x << ", " << p->y << ", " << p->z << ")\n";
-    }
-};
 
 /**
  * Initializes the points vector and the kdtree representation from a .xyz ascii file.

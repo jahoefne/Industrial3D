@@ -1,5 +1,4 @@
 #include "PointCloud.h"
-#include "K3DTree.h"
 
 #include <GL/glew.h>
 
@@ -15,6 +14,9 @@
 std::vector<PointCloud *> clouds; // all visible point clouds
 int height = 786, width = 1024, xposStart = 0, yposStart = 0;
 
+/**
+ * The display function - gets called by OpenGL to draw to the screen
+ */
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -44,6 +46,9 @@ void keys(int key, int x, int y) {
     }
 }
 
+/**
+ * Gets called if a mouse event occurs
+ */
 void mouse(int button, int state, int x, int y) {
     if (button == 0 && state == GLUT_DOWN) {
         xposStart = x;
@@ -51,6 +56,9 @@ void mouse(int button, int state, int x, int y) {
     }
 }
 
+/**
+ * Gets called when the mouse is dragged around the screen
+ */
 void mouseDrag(int xpos, int ypos) {
     double angleY = (double) (xpos - xposStart) / width * 180.0;
     double angleX = (double) (ypos - yposStart) / height * 180.0;
@@ -67,7 +75,9 @@ void mouseDrag(int xpos, int ypos) {
     glutPostRedisplay();
 }
 
-
+/**
+ * Initializes the camera
+ */
 void setupCamera() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -85,12 +95,15 @@ void setupCamera() {
 }
 
 
+/**
+ * Main function load the point cloud(s) and sets up the OpenGL stuff
+ */
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
     initialCloud->loadPointsFromFile("../data/cone.xyz", 0, 0, 0);
-   // initialCloud = initialCloud->smooth(1);
+    // initialCloud = initialCloud->smooth(1);
     PointCloud *cloud2 = new PointCloud();
-    cloud2 = initialCloud->smooth(1);
+    cloud2 = initialCloud->smooth(2);
 
     //cloud2->loadPointsFromFile("../data/angel2.xyz", 1, 0, 0);
     //cloud2->translate(new Point3D(1.0, 1.0, 1.0));
@@ -126,8 +139,8 @@ int main(int argc, char **argv) {
      });
  */
 
-      clouds.push_back(initialCloud);
-      clouds.push_back(cloud2);
+    clouds.push_back(initialCloud);
+    clouds.push_back(cloud2);
 
     glutInit(&argc, argv);
 

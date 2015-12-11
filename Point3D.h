@@ -7,31 +7,57 @@
 
 #include <cmath>
 
+
+/**
+ * This class defines a point in 3D space, and a corresponding color and size.
+ * Obejcts of this class are used in the K3DTree and PointCloud classes.
+ */
 class Point3D {
 public:
-    double x = 0.0, y = 0.0, z = 0.0;
-    float r = 1;
-    float g = 1;
-    float b = 1;
-    float size = 1;
+    double x = 0.0; /**< The x coordinates of the point */
+    double y = 0.0; /**< The y coordinates of the point */
+    double z = 0.0; /**< The z coordinates of the point */
 
-    /** Constructors */
+    float r = 1;
+    /**< The red value of the point */
+    float g = 1;
+    /**< The green value of the point */
+    float b = 1;
+    /**< The blue value of the point */
+    float size = 1; /**< The size of the point */
+
+    /** Constructor initalize the point with x,y,z values
+     */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
 
     Point3D() : x(0), y(0), z(0) { }
 
-    /** Move this point by another point */
+    /**
+     * Translate this point by another point
+     * @param dst the vector by which this point should be moved
+     */
     void translate(Point3D *dst) {
         x += dst->x;
         y += dst->y;
         z += dst->z;
     }
 
-    /** A vector describing the difference between this and *dst */
-    Point3D* diffVector(Point3D *dst) {
+    /**
+     * Compute a vector describing the difference between this and dst
+     * @param dst the destination point of the vector
+     * @return the difference between this point and dst
+     */
+    Point3D *diffVector(Point3D *dst) {
         return new Point3D(x - dst->x, y - dst->y, z - dst->z);
     }
 
+    /**
+     * Setter for the r, g, b, and size values
+     * @param r red color value
+     * @param g green color value
+     * @param b blue color value
+     * @param size the size of the point
+     */
     void rgbSize(float r, float g, float b, float size) {
         this->r = r;
         this->g = g;
@@ -46,22 +72,35 @@ public:
         g = 0;
     }
 
-    /** Change Color for this point */
+    /*
+     * Highlight the point, changes the color of the point to red
+     */
     void green() {
         r = 255;
         b = 25;
         g = 25;
     }
 
+    /**
+     * Computes the distance between this point and another point
+     * @param pt the distant point
+     * @return the distance between this and pt
+     */
     double distanceTo(Point3D pt) {
         double d = std::sqrt(sqr(this->x - pt.x) + sqr(this->y - pt.y) + sqr(this->z - pt.z));
         return d;
     }
 
+    /**
+     * Computes the squared distance between this point and another point
+     * @param pt the distant point
+     * @return the squarey distance between this and pt
+     */
     double sqDistance3d(Point3D *pt) {
         const double d = sqr(x - pt->x) + sqr(y - pt->y) + sqr(z - pt->z);
         return d;
     }
+
 
     double distance3d(Point3D *pt) {
         const double d = std::sqrt(sqDistance3d(pt));

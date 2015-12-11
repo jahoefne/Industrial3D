@@ -12,27 +12,38 @@
 #define Y_AXIS 1
 #define Z_AXIS 2
 
+/**
+ * KDNode represents a node in a KDTree
+ */
 class KDNode {
 public:
-    double median;
-    KDNode *left = nullptr;
-    KDNode *right = nullptr;
-    Point3D *ptrFirstPoint;
-    Point3D *ptrLastPoint;
+    double median; /**< The median value which splits the space in the current dimension */
+    KDNode *left = nullptr; /**< The left child of the node */
+    KDNode *right = nullptr; /**< The right child of the node */
+    Point3D *ptrFirstPoint; /**< The pointer to the first point */
+    Point3D *ptrLastPoint; /**< The pointer to the last point */
 };
 
+
+/**
+ * K3DTree defines a three dimensional KDTree using KDNode, and implements the typical KDTree algorithms -
+ * closest neighbour, radius query, range query, ...
+ */
 class K3DTree {
 public:
-    // std::vector<Point3D> points_range;
-    KDNode *root;
+    KDNode *root; /**< The root node of the KDTree */
 
-    /** Constructor */
+    /**
+     * Constructor - Initialized the tree for a given Point vector
+     */
     K3DTree(std::vector<Point3D> *points) {
         printf("Building KD Tree with %ld Points\n", points->size());
         this->root = this->recConstruct(&points->at(0), &points->at(points->size() - 1), 0);
     }
 
-    /** Recursive construction method */
+    /**
+     * Recursive construction method - recursively builds up the KDTree
+     */
     KDNode *recConstruct(Point3D *begin, Point3D *end, int depth) {
         unsigned long numPoints = (end - begin);
         unsigned long medianPosition = numPoints / 2;
@@ -69,6 +80,11 @@ public:
     }
 
 
+    /**
+     * Returns the closest neighbour in the KDTree of any given point.
+     * @param tgt - the target Point3D
+     * @return the closest point in the KDTree
+     */
     Point3D *closestNeighbour(Point3D *tgt) {
         Point3D* close = recClosestNeighbour(tgt, root, X_AXIS);
         double distance = close->distance3d(tgt);
@@ -88,12 +104,23 @@ public:
         }
     }
 
+    /**
+     * Find all neighbours of a point which are in the range of a radius
+     * @param queryPoint the point which is being queried
+     * @param radius the maximum distance of a returned point to queryPoint
+     */
     std::vector<Point3D*>* findRadiusNeighbors(Point3D* queryPoint, double radius){
         std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
         findRadiusNeighborsRec(root, queryPoint, radius, neighbors, 0);
         return neighbors;
     }
 
+    /**
+     * Finds all points which are in a diven range
+     * @param min the point describing the minimum range
+     * @param max the point describing the maximum range
+     * @return all points which are within min - max
+     */
     std::vector<Point3D*>* findRange(Point3D* min, Point3D* max){
         std::vector<Point3D*> *neighbors = new std::vector<Point3D*>();
         findRangeRec(root, min, max, neighbors, 0);
