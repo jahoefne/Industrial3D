@@ -25,7 +25,6 @@ void display(void) {
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
         for (int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
-            printf("Color: %f %f %f",pt.r,pt.g,pt.b);
             glColor3f(pt.r, pt.g, pt.b);
             glPointSize(pt.size);
             glVertex3d(pt.x, pt.y, pt.z);
