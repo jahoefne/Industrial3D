@@ -14,7 +14,8 @@ public:
     float g = 1;
     float b = 1;
     float size = 1;
-
+    bool yellow = false;
+    bool red = false;
     /** Constructors */
     Point3D(double x, double y, double z) : x(x), y(y), z(z) { }
 

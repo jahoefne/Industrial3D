@@ -111,6 +111,36 @@ void PointCloud::alignTo(PointCloud *cloud) {
     fflush(stdout);
 }
 
+PointCloud* PointCloud::thinning(double radius)
+{
+    vector<Point3D *> neighbors;
+    vector<Point3D> thinningPoints = *(new vector<Point3D>());
+    Point3D notRedPoint;
+    notRedPoint = *(new Point3D(0,0,0)); //this are the points tagged only once or not tagged, they are not eliminated!
+    long Numpoints = points.size();
+    for(int i = 0; i < Numpoints; i++)
+    {
+
+        neighbors = *(kdTree->findRadiusNeighbors(&(points[i]),radius));
+        for(unsigned int n= 0; n < neighbors.size(); n++)
+        {
+            if ((neighbors[n]->yellow = false) && (neighbors[n]->red = false)){  //if point is green
+                neighbors[n]->ignore = false;  //We mark the point with yellow color
+                points[i].ignore=true;
+            }else {
+
+            }
+
+        }
+        thinningPoints.push_back(notRedPoint); // store weighted point
+    }
+    PointCloud *result = (new PointCloud());
+    result->points=thinningPoints;
+    return result;
+
+}
+
+
 // This function smoothes a given PointCloud within a certain radius and gives a color to the point
 
 PointCloud* PointCloud::smooth(double radius)

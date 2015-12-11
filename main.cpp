@@ -25,10 +25,13 @@ void display(void) {
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
         for (int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
-            printf("Color: %f %f %f",pt.r,pt.g,pt.b);
-            glColor3f(pt.r, pt.g, pt.b);
-            glPointSize(pt.size);
-            glVertex3d(pt.x, pt.y, pt.z);
+          //  printf("Color: %f %f %f",pt.r,pt.g,pt.b);
+         //   if (pt.ignore){
+                glColor3f(pt.r, pt.g, pt.b);
+                glPointSize(pt.size);
+                glVertex3d(pt.x, pt.y, pt.z);
+         //   }
+
         }
     });
     glEnd();
@@ -92,6 +95,8 @@ int main(int argc, char **argv) {
    // initialCloud = initialCloud->smooth(1);
     PointCloud *cloud2 = new PointCloud();
     cloud2 = initialCloud->smooth(1);
+    PointCloud *cloud3 = new PointCloud();
+    cloud3 = initialCloud->thinning(.5);
 
     //cloud2->loadPointsFromFile("../data/angel2.xyz", 1, 0, 0);
     //cloud2->translate(new Point3D(1.0, 1.0, 1.0));
@@ -129,6 +134,7 @@ int main(int argc, char **argv) {
 
       clouds.push_back(initialCloud);
       clouds.push_back(cloud2);
+      clouds.push_back(cloud3);
 
     glutInit(&argc, argv);
 

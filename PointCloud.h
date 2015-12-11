@@ -36,6 +36,7 @@ public:
     Point3D* getcolor(Point3D* green, Point3D* yellow, Point3D* red,Point3D* final,float interpolation_factor);
     void alignTo(PointCloud* cloud);
     PointCloud* smooth(double radius);
+    PointCloud* thinning(double radius);
 };
 
 
