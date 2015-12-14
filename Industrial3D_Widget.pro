@@ -4,7 +4,19 @@
 #
 #-------------------------------------------------
 
+#CONFIG += c++11
+# With C++11 support
+greaterThan(QT_MAJOR_VERSION, 4){
+CONFIG += c++11
+} else {
+QMAKE_CXXFLAGS += -std=c++0x
+}
+
 QT       += core gui
+QT       += opengl
+QT       += widgets
+
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,8 +25,21 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+    PointCloud.cpp \
+    Point3D.cpp \
+    GLcamera.cpp \
+    GLwidget.cpp \
+    mainwindow_.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    K3DTree.h \
+    Point3D.h \
+    PointCloud.h \
+    GLcamera.h \
+    GLwidget.h \
+    mainwindow_.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    mainwindow_.ui
+
+

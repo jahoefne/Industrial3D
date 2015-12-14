@@ -15,6 +15,15 @@ public:
     explicit MainWindow_(QWidget *parent = 0);
     ~MainWindow_();
 
+private slots:
+    void on_actionQuit_Application_triggered();
+
+    void on_rangeButton_clicked();
+
+    void on_smoothButton_clicked();
+
+    void on_actionOpen_Dataset_triggered();
+
 private:
     Ui::MainWindow_ *ui;
 };
