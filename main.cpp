@@ -26,11 +26,11 @@ void display(void) {
         for (int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
           //  printf("Color: %f %f %f",pt.r,pt.g,pt.b);
-         //   if (pt.ignore){
+            if (!pt.ignore){
                 glColor3f(pt.r, pt.g, pt.b);
                 glPointSize(pt.size);
                 glVertex3d(pt.x, pt.y, pt.z);
-         //   }
+            }
 
         }
     });
@@ -91,12 +91,12 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("../data/cone.xyz", 0, 0, 0);
-   // initialCloud = initialCloud->smooth(1);
+    initialCloud->loadPointsFromFile("../data/angel.xyz", 0, 0, 0);
+    //initialCloud = initialCloud->smooth(.01);
     PointCloud *cloud2 = new PointCloud();
-    cloud2 = initialCloud->smooth(1);
-    PointCloud *cloud3 = new PointCloud();
-    cloud3 = initialCloud->thinning(.5);
+    cloud2 = initialCloud->smooth(.01);
+  //  PointCloud *cloud2 = new PointCloud();
+  //    initialCloud->thinning(.2);
 
     //cloud2->loadPointsFromFile("../data/angel2.xyz", 1, 0, 0);
     //cloud2->translate(new Point3D(1.0, 1.0, 1.0));
@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
 
       clouds.push_back(initialCloud);
       clouds.push_back(cloud2);
-      clouds.push_back(cloud3);
+     // clouds.push_back(cloud3);
 
     glutInit(&argc, argv);
 
