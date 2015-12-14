@@ -89,7 +89,7 @@ void PointCloud::alignTo(PointCloud *cloud) {
     long pointCount = points.size();
     for (int i = 0; i < SAMPLE_SIZE; i++) {
         Point3D* pt = &points[rand() % pointCount];
-        if (vectorDiffs.size() % 1000 == 0) printf("\n%ld", vectorDiffs.size());
+      //  if (vectorDiffs.size() % 1000 == 0) printf("\n%ld", vectorDiffs.size());
         Point3D *n = cloud->kdTree->closestNeighbour(pt);
         pt->rgbSize(1,1,0,2);
         pt->rgbSize(0,0,1,2);
@@ -220,7 +220,7 @@ PointCloud* PointCloud::smooth(double radius)
         Point3D* finalcolor = (new Point3D(0,0,0));
 
         finalcolor= getcolor(greenpoint,yellowpoint,redpoint,finalcolor,value);
-        printf("%f %f %f\n", finalcolor->r, finalcolor->g, finalcolor->b);
+       // printf("%f %f %f\n", finalcolor->r, finalcolor->g, finalcolor->b);
         smoothPoints[i].rgbSize(finalcolor->r,finalcolor->b,finalcolor->g,1);
 
     }
