@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/main.cpp" description="}" line="33" />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" assignedExecutableTargets="true" buildAllGenerated="true">
     <generated>
       <config projectName="Industrial3D" targetName="Industrial3D" />
@@ -12,10 +15,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="752b1f0e-cc8c-4f7d-9d59-8e5714b77f61" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bin/test.xyz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Algorithms.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Algorithms.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Matrix.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SVD.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SVD.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/all.xyz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/line.xyz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/plane.xyz" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Industrial3D.iml" afterPath="$PROJECT_DIR$/.idea/Industrial3D.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/K3DTree.h" afterPath="$PROJECT_DIR$/K3DTree.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Point3D.h" afterPath="$PROJECT_DIR$/Point3D.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PointCloud.cpp" afterPath="$PROJECT_DIR$/PointCloud.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
     </list>
     <ignored path="Industrial3D.iws" />
@@ -37,11 +49,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8083832">
-              <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -51,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/PointCloud.h">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <caret line="32" column="23" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
               <folding>
                 <element signature="e#70#87#0" expanded="true" />
               </folding>
@@ -59,24 +71,48 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Point3D.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Point3D.h">
+      <file leaf-file-name="SVD.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SVD.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-              <folding />
+              <caret line="56" column="39" selection-start-line="56" selection-start-column="39" selection-end-line="56" selection-end-column="39" />
+              <folding>
+                <element signature="e#1#17#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PointCloud.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PointCloud.cpp">
+      <file leaf-file-name="Algorithms.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Algorithms.h">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+              <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
               <folding>
-                <element signature="e#53#72#0" expanded="true" />
+                <element signature="e#49#66#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Algorithms.cpp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Algorithms.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.06369427">
+              <caret line="72" column="23" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Matrix.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Matrix.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -85,62 +121,46 @@
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="91" column="43" selection-start-line="91" selection-start-column="43" selection-end-line="91" selection-end-column="43" />
+              <caret line="105" column="19" selection-start-line="105" selection-start-column="4" selection-end-line="105" selection-end-column="19" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
-                <element signature="e#149#169#0" expanded="true" />
+                <element signature="e#173#193#0" expanded="true" />
+                <element signature="e#3367#3584#0" expanded="false" />
+                <element signature="e#3746#3978#0" expanded="false" />
+                <element signature="e#3983#4203#0" expanded="false" />
+                <element signature="e#4389#4544#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cone.xyz" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/cone.xyz">
+      <file leaf-file-name="SVD.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SVD.h">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="103" column="16" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="16" />
+              <caret line="14" column="35" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bunny.xyz" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/bunny.xyz">
+      <file leaf-file-name="Point3D.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Point3D.h">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="46" column="25" selection-start-line="11" selection-start-column="24" selection-end-line="46" selection-end-column="25" />
+              <caret line="29" column="49" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.xyz" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/test.xyz">
+      <file leaf-file-name="PointCloud.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PointCloud.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="34" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="K3DTree.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/K3DTree.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="94" column="16" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="16" />
+            <state vertical-scroll-proportion="-16.592592">
+              <caret line="205" column="98" selection-start-line="205" selection-start-column="98" selection-end-line="205" selection-end-column="98" />
               <folding>
-                <element signature="e#101#121#0" expanded="true" />
+                <element signature="e#53#72#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -161,17 +181,22 @@
         <option value="$PROJECT_DIR$/data/bunny.xyz" />
         <option value="$PROJECT_DIR$/MainWindow.cpp" />
         <option value="$PROJECT_DIR$/MainWindow.h" />
-        <option value="$PROJECT_DIR$/PointCloud.h" />
         <option value="$PROJECT_DIR$/App.cpp" />
         <option value="$PROJECT_DIR$/App.h" />
         <option value="$PROJECT_DIR$/OpenGlView.h" />
         <option value="$PROJECT_DIR$/ui-forms/MainWindow.ui" />
+        <option value="$PROJECT_DIR$/bin/test.xyz" />
+        <option value="$PROJECT_DIR$/Doxyfile" />
+        <option value="$PROJECT_DIR$/K3DTree.h" />
+        <option value="$PROJECT_DIR$/PointCloud.h" />
         <option value="$PROJECT_DIR$/PointCloud.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/bin/test.xyz" />
-        <option value="$PROJECT_DIR$/K3DTree.h" />
-        <option value="$PROJECT_DIR$/main.cpp" />
+        <option value="$PROJECT_DIR$/Algorithms.h" />
+        <option value="$PROJECT_DIR$/SVD.cpp" />
+        <option value="$PROJECT_DIR$/SVD.h" />
         <option value="$PROJECT_DIR$/Point3D.h" />
+        <option value="$PROJECT_DIR$/Algorithms.cpp" />
+        <option value="$PROJECT_DIR$/main.cpp" />
       </list>
     </option>
   </component>
@@ -181,8 +206,9 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1280" />
-    <option name="height" value="796" />
+    <option name="x" value="1" />
+    <option name="width" value="1440" />
+    <option name="height" value="896" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -263,15 +289,32 @@
     <property name="recentsLimit" value="5" />
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="151" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="153" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="156" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="950" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="151" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="153" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="156" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="950" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/bin" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/dist/Debug/GNU-Linux-x86" />
       <recent name="$PROJECT_DIR$/build/Debug/GNU-Linux-x86" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/bin" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Industrial3D">
@@ -305,7 +348,7 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="Industrial3D" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Industrial3D" RUN_TARGET_NAME="Industrial3D" EXPLICIT_BUILD_TARGET_NAME="all">
+    <configuration default="false" name="Industrial3D" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Industrial3D" RUN_TARGET_NAME="Industrial3D" EXPLICIT_BUILD_TARGET_NAME="all">
       <envs />
       <method />
     </configuration>
@@ -385,7 +428,19 @@
       <option name="project" value="LOCAL" />
       <updated>1447860053649</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="remove unused import">
+      <created>1449829360316</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1449829360316</updated>
+    </task>
+    <task id="LOCAL-00012" summary="some basic documentation">
+      <created>1449833865923</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1449833865923</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -398,16 +453,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="796" extended-state="6" />
+    <frame x="1" y="0" width="1440" height="896" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1703125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1701389" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32971016" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4507846" sideWeight="0.496875" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43509272" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45068663" sideWeight="0.496875" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4344569" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5433855" sideWeight="0.503125" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33514985" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20684735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33458176" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3770287" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20464768" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -442,48 +497,17 @@
     <MESSAGE value="black default color was a bad idea on black background" />
     <MESSAGE value="- fix relative path issue for .xyz files&#10;- move kd-tree object in PointCloud object&#10;- capabilities to display multiple clouds&#10;" />
     <MESSAGE value="colors" />
-    <option name="LAST_COMMIT_MESSAGE" value="colors" />
+    <MESSAGE value="remove unused import" />
+    <MESSAGE value="some basic documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="some basic documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="9" />
+      <option name="time" value="12" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Point3D.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/cone.xyz">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="32" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PointCloud.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#70#87#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Point3D.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -510,21 +534,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/bunny.xyz">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40234" column="17" selection-start-line="40234" selection-start-column="17" selection-end-line="40234" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -535,6 +555,7 @@
           <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
           <folding>
             <element signature="e#101#121#0" expanded="true" />
+            <marker date="1449831365000" expanded="true" signature="3792:3969" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -590,21 +611,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/bunny.xyz">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40218" column="23" selection-start-line="40218" selection-start-column="23" selection-end-line="40218" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -658,7 +675,11 @@
           <caret line="88" column="47" selection-start-line="88" selection-start-column="47" selection-end-line="88" selection-end-column="47" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -712,7 +733,11 @@
           <caret line="88" column="47" selection-start-line="88" selection-start-column="47" selection-end-line="88" selection-end-column="47" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -758,7 +783,11 @@
           <caret line="643" column="0" selection-start-line="631" selection-start-column="19" selection-end-line="643" selection-end-column="0" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -784,7 +813,11 @@
           <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -803,7 +836,11 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -812,17 +849,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PointCloud.h">
+    <entry file="file://$PROJECT_DIR$/data/angel2.xyz">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-23.74074">
+          <caret line="237017" column="27" selection-start-line="237017" selection-start-column="27" selection-end-line="237017" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/cone.xyz">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <element signature="e#70#87#0" expanded="true" />
-          </folding>
+          <caret line="3150" column="32" selection-start-line="3150" selection-start-column="32" selection-end-line="3150" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -834,57 +875,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/bunny.xyz">
+    <entry file="file://$PROJECT_DIR$/K3DTree.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="25" selection-start-line="11" selection-start-column="24" selection-end-line="46" selection-end-column="25" />
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding>
+            <element signature="e#101#121#0" expanded="true" />
+            <marker date="1449831365000" expanded="true" signature="3792:3969" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/bunny.xyz">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/cone.xyz">
+    <entry file="file://$PROJECT_DIR$/Doxyfile">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="103" column="16" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/test.xyz">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="34" selection-end-column="25" />
+          <caret line="118" column="32" selection-start-line="118" selection-start-column="32" selection-end-line="118" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PointCloud.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+        <state vertical-scroll-proportion="-16.592592">
+          <caret line="205" column="98" selection-start-line="205" selection-start-column="98" selection-end-line="205" selection-end-column="98" />
           <folding>
             <element signature="e#53#72#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="91" column="43" selection-start-line="91" selection-start-column="43" selection-end-line="91" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#149#169#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/K3DTree.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="94" column="16" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="16" />
-          <folding>
-            <element signature="e#101#121#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -892,16 +915,87 @@
     <entry file="file://$PROJECT_DIR$/Point3D.h">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+          <caret line="29" column="49" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PointCloud.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="23" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
+          <folding>
+            <element signature="e#70#87#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8083832">
-          <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Matrix.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Algorithms.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+          <folding>
+            <element signature="e#49#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="105" column="19" selection-start-line="105" selection-start-column="4" selection-end-line="105" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#173#193#0" expanded="true" />
+            <element signature="e#3367#3584#0" expanded="false" />
+            <element signature="e#3746#3978#0" expanded="false" />
+            <element signature="e#3983#4203#0" expanded="false" />
+            <element signature="e#4389#4544#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SVD.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="35" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SVD.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="56" column="39" selection-start-line="56" selection-start-column="39" selection-end-line="56" selection-end-column="39" />
+          <folding>
+            <element signature="e#1#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Algorithms.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06369427">
+          <caret line="72" column="23" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

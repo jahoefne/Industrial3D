@@ -1,4 +1,5 @@
 #include "PointCloud.h"
+#include "Algorithms.h"
 
 #include <GL/glew.h>
 
@@ -100,10 +101,12 @@ void setupCamera() {
  */
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("../data/cone.xyz", 0, 0, 0);
+    initialCloud->loadPointsFromFile("../data/line.xyz", 0, 1, 0);
+
+    computeBestFits(initialCloud->points);
     // initialCloud = initialCloud->smooth(1);
-    PointCloud *cloud2 = new PointCloud();
-    cloud2 = initialCloud->smooth(2);
+  //  PointCloud *cloud2 = new PointCloud();
+  //  cloud2 = initialCloud->smooth(2);
 
     //cloud2->loadPointsFromFile("../data/angel2.xyz", 1, 0, 0);
     //cloud2->translate(new Point3D(1.0, 1.0, 1.0));
@@ -140,7 +143,7 @@ int main(int argc, char **argv) {
  */
 
     clouds.push_back(initialCloud);
-    clouds.push_back(cloud2);
+  //  clouds.push_back(cloud2);
 
     glutInit(&argc, argv);
 

@@ -15,6 +15,11 @@ set(SOURCE_FILES
         K3DTree.h
         PointCloud.cpp
         PointCloud.h
+        Algorithms.cpp
+        Algorithms.h
+        Matrix.h
+        SVD.h
+        SVD.cpp
         Point3D.h)
 
 

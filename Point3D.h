@@ -14,9 +14,12 @@
  */
 class Point3D {
 public:
-    double x = 0.0; /**< The x coordinates of the point */
-    double y = 0.0; /**< The y coordinates of the point */
-    double z = 0.0; /**< The z coordinates of the point */
+    double x = 0.0;
+    /**< The x coordinates of the point */
+    double y = 0.0;
+    /**< The y coordinates of the point */
+    double z = 0.0;
+    /**< The z coordinates of the point */
 
     float r = 1;
     /**< The red value of the point */
@@ -25,6 +28,94 @@ public:
     float b = 1;
     /**< The blue value of the point */
     float size = 1; /**< The size of the point */
+
+    /** @brief custom operator that enables the + operation of two points.
+        \code{.cpp}
+        Point3d p1, p2;
+        Point3d p3 = p1 + p2;
+        \endcode
+      @param p2 point that should be added
+    */
+    Point3D operator+(const Point3D &p2) const {
+        Point3D result;
+        result.x = x + p2.x;
+        result.y = y + p2.y;
+        result.z = z + p2.z;
+        return result;
+    }
+
+    /** @brief custom operator that enables the - operation of two points.
+        \code{.cpp}
+        Point3d p1, p2;
+        Point3d p3 = p1 - p2;
+        \endcode
+      @param p2 point that should be subtracted
+    */
+    Point3D operator-(const Point3D &p2) const {
+        Point3D result;
+        result.x = x - p2.x;
+        result.y = y - p2.y;
+        result.z = z - p2.z;
+        return result;
+    }
+
+    /** @brief custom operator that enables the multiplication with a scalar value.
+        \code{.cpp}
+        Point3d p1;
+        Point3d p2 = p1*0.5;
+        \endcode
+      @param scalar scalar value the point should be multiplied with.
+    */
+    Point3D operator*(double scalar) const {
+        Point3D result;
+        result.x = scalar * x;
+        result.y = scalar * y;
+        result.z = scalar * z;
+        return result;
+    }
+
+    /** @brief custom operator that enables the += operation.
+        \code{.cpp}
+        Point3d p1,p2;
+        p1 += p2; // -> p1 = p1 + p2
+        \endcode
+        @param p2 point that should be added to the current (left-hand side) point.
+    */
+    Point3D &operator+=(const Point3D &p2) {
+        x += p2.x;
+        y += p2.y;
+        z += p2.z;
+        return *this;
+    }
+
+    /** @brief custom operator that enables the -= operation.
+        \code{.cpp}
+        Point3d p1,p2;
+        p1 -= p2; // -> p1 = p1 - p2
+        \endcode
+      @param p2 point that should be subtracted from the current (left-hand side) point.
+    */
+    Point3D &operator-=(const Point3D &p2) {
+        x -= p2.x;
+        y -= p2.y;
+        z -= p2.z;
+        return *this;
+    }
+
+    /** @brief custom operator that enables the += operation.
+        \code{.cpp}
+        Point3d p1,p2;
+        p1 *= 2.0 -> p1 = p1 * scalar)
+        \endcode
+      @param scalar scalar value the current (left-hand side) point should be multiplied with.
+    */
+    Point3D &operator*=(double scalar) {
+        x *= scalar;
+        y *= scalar;
+        z *= scalar;
+        return *this;
+    }
+
 
     /** Constructor initalize the point with x,y,z values
      */
