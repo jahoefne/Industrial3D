@@ -6,6 +6,10 @@
 
 .idea/*
 
+.idea/workspace.xml
+
+bin/*
+
 # Precompiled Headers
 *.gch
 *.pch

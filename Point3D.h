@@ -29,6 +29,8 @@ public:
     /**< The blue value of the point */
     float size = 1; /**< The size of the point */
 
+    bool ignore = false;
+
     /** @brief custom operator that enables the + operation of two points.
         \code{.cpp}
         Point3d p1, p2;
