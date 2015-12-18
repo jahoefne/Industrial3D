@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <math.h>
 #include <cmath>
-
+#include <stddef.h>
 
 namespace SVD
 {
@@ -45,7 +45,7 @@ void decomposeMatrix(Matrix& U, std::vector<double>& S, Matrix& V)
   const size_t n = U.N();
 
   V.resize(U.N(), U.N());
-
+printf("%d %d\n",V.M(), V.N());
   assert(m>=n && m>0 && n>0);
   
   S.resize(n);
@@ -59,6 +59,8 @@ void decomposeMatrix(Matrix& U, std::vector<double>& S, Matrix& V)
   const size_t nrt = std::max(size_t(0),std::min(n-2,m));
   const size_t K   = std::max(nct,nrt);
   
+  printf("%d %d %d\n", nct, nrt,K);
+
   for (size_t k = 0; k < K; ++k)
   {
     if (k < nct)

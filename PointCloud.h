@@ -18,7 +18,7 @@ using namespace std;
 class PointCloud {
 public:
     /** default empty constructor */
-    PointCloud(){};
+    PointCloud(){}
 
     /** TODO: Who ever wrote this function - please document what it does*/
     double maxAt(std::vector<double>& vector_name);
@@ -61,6 +61,16 @@ public:
     PointCloud* smooth(double radius);
 
     void thinning(double radius);
+
+    void computeBBox(const std::vector<Point3D>& points);
+
+/*
+    double getMax_x();
+    double getMax_y();
+    double getMax_z();
+    double getMin_x();
+    double getMin_y();
+    double getMin_z();*/
 };
 
 

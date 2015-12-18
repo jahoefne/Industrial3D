@@ -10,7 +10,7 @@
 #include <climits>
 #include <cmath>
 
-
+Point3D  m_bbmin, m_bbmax;
 
 /**
  * Initializes the points vector and the kdtree representation from a .xyz ascii file.
@@ -58,8 +58,55 @@ int PointCloud::loadPointsFromFile(std::string fileName, float r, float g, float
         std::cout << "Can't read file!" << strerror(errno);;
     }
     return -1;
-};
+}
 
+/*void computeBBox(const std::vector<Point3D> *points)
+{
+    //if there are no points we return an empty bounding box
+      if (points->empty())
+      {
+        m_bbmin.x = 0;  m_bbmin.y = 0;  m_bbmin.z = 0;
+        m_bbmax.x = 0;  m_bbmax.y = 0;  m_bbmax.z = 0;
+        return;
+      }
+
+      //We now compute the min and max coordinates for our bounding box
+      m_bbmin = points->front(); //initialize min with the first point
+      m_bbmax = points->front(); //initialize max with the first point
+
+      for (unsigned int i = 0; i < points->size(); ++i)
+      {
+        const Point3D pt = points->at(i); //do not copy but get a reference to the i-th point in the vector
+        if (pt.x < m_bbmin.x) m_bbmin.x = pt.x;const
+        else if (pt.x > m_bbmax.x) m_bbmax.x = pt.x;
+
+        if (pt.y < m_bbmin.y) m_bbmin.y = pt.y;
+        else if (pt.y > m_bbmax.y) m_bbmax.y = pt.y;
+
+        if (pt.z < m_bbmin.z) m_bbmin.z = pt.z;
+        else if (pt.z > m_bbmax.z) m_bbmax.z = pt.z;
+      }
+
+      //check how many points we have read from file
+      std::cout << "point vector now contains: " << points->size() << " points" << std::endl;
+
+      if (points->empty())
+      {
+        std::cout << "ERROR: no points to show...(press enter to exit)" << std::endl;
+        getc(stdin);
+        return;
+      }
+
+      //m_sceneCenter = (m_bbmax + m_bbmin) * 0.5;
+     // m_sceneRadius = distance3d(m_sceneCenter, m_bbmax);
+
+      std::cout << "\nBounding Box was computed:\n";
+      std::cout << "minPoint is: " << m_bbmin.x << "," << m_bbmin.y << "," << m_bbmin.z << std::endl;
+      std::cout << "maxPoint is: " << m_bbmax.x << "," << m_bbmax.y << "," << m_bbmax.z << std::endl;
+
+}
+
+*/
 void PointCloud::translate(Point3D *point) {
     for_each(points.begin(), points.end(), [&](Point3D pt) {
         pt.translate(point);
@@ -72,6 +119,86 @@ void PointCloud::translate(Point3D *point) {
     }
     kdTree = new K3DTree(&this->points); // Init Kd-Tree
 }
+
+// Getters for boundaries of the Pointcloud
+
+/*double getMax_x(K3DTree* tree)
+{
+    double xmax = tree->root->ptrLastPoint->x;
+    return xmax;
+}
+double getMax_y(K3DTree* tree)
+{
+    double ymax_left = tree->root->left->ptrLastPoint->y;
+    double ymax_right = tree->root->right->ptrLastPoint->y;
+
+    double ymax = std::max(ymax_left, ymax_right);
+    return ymax;
+}
+double getMax_z(K3DTree* tree)
+{
+    double zmax_left1 = tree->root->left->left->ptrLastPoint->z;
+    double zmax_left2 = tree->root->left->right->ptrLastPoint->z;
+
+    double zmax_right1 = tree->root->right->left->ptrLastPoint->z;
+    double zmax_right2 = tree->root->right->right->ptrLastPoint->z;
+
+    double zmax_left = std::max(zmax_left1,zmax_left2);
+    double zmax_right = std::max(zmax_right1,zmax_right2);
+
+    double zmax = std::max(zmax_left, zmax_right);
+    return zmax;
+}
+
+double getMin_x(K3DTree* tree)
+{
+    double xmin = tree->root->ptrFirstPoint->x;
+    return xmin;
+}
+
+double getMin_y(K3DTree* tree)
+{
+    double ymin_left =  tree->root->left->ptrFirstPoint->y;
+    double ymin_right = tree->root->right->ptrFirstPoint->y;
+
+    double ymin = std::max(ymin_left, ymin_right);
+    return ymin;
+}
+
+double getMin_z(K3DTree* tree)
+{
+    double zmin_left1 = tree->root->left->left->ptrFirstPoint->z;
+    double zmin_left2 = tree->root->left->right->ptrFirstPoint->z;
+    double zmin_right1 = tree->root->right->left->ptrFirstPoint->z;
+    double zmin_right2 = tree->root->right->right->ptrFirstPoint->z;
+
+    double zmin_left = std::max(zmin_left1,zmin_left2);
+    double zmin_right = std::max(zmin_right1, zmin_right2);
+
+    double zmin = std::max(zmin_left, zmin_right);
+    return zmin;
+}
+*/
+/*vector<Point3D> getBounds(K3DTree tree)
+{
+
+
+
+
+
+    vector<double> *xbounds = new vector<double>(xmin, xmax);
+    vector<double> *ybounds = new vector<double>(ymin, ymax);
+    vector<double> *zbounds = new vector<double>(zmin, zmax);
+
+    /*vector<double> bounds = new vector<double>();
+    bounds.push_back(xmin);
+    bounds.push_back(xmax);
+    bounds.push_back(ybounds);
+    bounds.push_back(zbounds);
+
+    return bounds;
+
+}*/
 
 #define SAMPLE_SIZE  20
 

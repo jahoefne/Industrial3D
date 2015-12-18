@@ -1,6 +1,9 @@
 #include <iostream>
 #include "Algorithms.h"
 #include "SVD.h"
+#include <stddef.h>
+#include <GL/gl.h>
+#include "PointCloud.h"
 
 /** @brief Computes and returns the center of the point cloud.
 @param points vector of points
@@ -50,6 +53,7 @@ void computeCovarianceMatrix3x3(const std::vector<Point3D> &points, Matrix &M) {
         Myy += y1 * y1;
         Myz += y1 * z1;
         Mzz += z1 * z1;
+
     }
 
     //setting the sums to the matrix (division by N just for numerical reason if we have very large sums)
@@ -62,12 +66,16 @@ void computeCovarianceMatrix3x3(const std::vector<Point3D> &points, Matrix &M) {
     M(2, 0) = M(0, 2);
     M(2, 1) = M(1, 2);
     M(2, 2) = Mzz / N;
+
+    for(int i=0; i<9; ++i)
+        printf("%lf\n",M[i] );
+
 }
 
 /** @brief computes best-fit approximations.
 @param points vector of points
 */
-void computeBestFits(const std::vector<Point3D> &points) {
+vector<Point3D>* computeBestFits(const std::vector<Point3D> &points) {
     Matrix M(3, 3);
 
     const Point3D center = computeCenter(points);
@@ -76,7 +84,7 @@ void computeBestFits(const std::vector<Point3D> &points) {
 
     const Point3D ev0(M(0, 0), M(1, 0), M(2,
                                           0)); //first column of M == Eigenvector corresponding to the largest Eigenvalue == direction of biggest variance
-    const Point3D ev1(M(0, 1), M(1, 1), M(2, 1));
+   // const Point3D ev1(M(0, 1), M(1, 1), M(2, 1));
     const Point3D ev2(M(0, 2), M(1, 2), M(2,
                                           2)); //third column of M == Eigenvector corresponding to the smallest Eigenvalue == direction of lowest variance
 
@@ -93,6 +101,7 @@ void computeBestFits(const std::vector<Point3D> &points) {
     meanDistance /= points.size();
     std::cout << "mean distance to line: " << meanDistance << std::endl;
 
+
     std::cout << "\n";
     //best-fit plane
     std::cout << "*** Best-fit plane ***\n";
@@ -106,7 +115,19 @@ void computeBestFits(const std::vector<Point3D> &points) {
     }
     meanDistance /= points.size();
     std::cout << "mean distance to plane: " << meanDistance << std::endl;
+
+
+    double param = 1.0;
+    double param2 = 1.0;
+
+    vector<Point3D>* drawPoints = new vector<Point3D>();
+    drawPoints->push_back(center + (ev0*param));
+    drawPoints->push_back(center - (ev0*param2));
+    //drawPoints->push_back(ev2);
+    return drawPoints;
+
 }
+
 
 double sqr(double value)
 {

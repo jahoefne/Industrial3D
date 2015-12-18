@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Matrix.h"
+#include <cmath>
+#include <stdio.h>
 
 /** @brief In this namespace the singular value decomposition is implemented.
 */
@@ -27,10 +29,13 @@ namespace SVD
   */
   inline double hypotenuse(const double& v1, const double& v2)
   {
-    const double a(abs(v1)), b(abs(v2));
+     //return sqrt(v1*v1 + v2*v2);
+
+    const double a(std::abs(v1)), b(std::abs(v2));
+    printf("%lf %lf\n", a, b);
     return (a > b ? a*sqrt(1.0 + sqr(b / a)) :
                     (b == 0.0 ? 0.0 : b*sqrt(1.0 + sqr(a / b))));
   }
-};
+}
 
 #endif  // MY_SVD_H

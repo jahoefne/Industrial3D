@@ -2,7 +2,7 @@
 #include "K3DTree.h"
 
 #include <GL/glew.h>
-
+#include "Algorithms.h"
 #ifdef __APPLE__
 
 #include <GLUT/glut.h>
@@ -11,6 +11,7 @@
 #include <GL/glut.h>
 #endif
 
+vector<Point3D>* drawPoints;
 
 std::vector<PointCloud *> clouds; // all visible point clouds
 int height = 786, width = 1024, xposStart = 0, yposStart = 0;
@@ -22,6 +23,13 @@ void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
+
+    glLineWidth(2.5);
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_LINES);
+    glVertex3f(drawPoints->at(0).x,drawPoints->at(0).y, drawPoints->at(0).z);
+    glVertex3f(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
+    glEnd();
 
     glBegin(GL_POINTS);
 
@@ -36,7 +44,7 @@ void display(void) {
             }
 
         }
-    });
+    });    
     glEnd();
     glutSwapBuffers();
 }
@@ -45,8 +53,9 @@ void keys(int key, int x, int y) {
     if (key == 27 || key == 'q')
         exit(0);
 
-    if (key == 'c') {
-        clouds.front()->alignTo(clouds.back());
+    if (key == 't') {
+        clouds.front()->thinning(0.1);
+        //clouds.front()->alignTo(clouds.back());
         glutPostRedisplay();
     }
 }
@@ -100,10 +109,15 @@ void setupCamera() {
 
 int main(int argc, char **argv) {
     PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("../data/angel.xyz", 0, 0, 0);
+    initialCloud->loadPointsFromFile("../data/stbunny.xyz", 1, 1, 0);
     //initialCloud = initialCloud->smooth(.01);
-    PointCloud *cloud2 = new PointCloud();
-    cloud2 = initialCloud->smooth(.01);
+    drawPoints = computeBestFits(initialCloud->points);
+
+    initialCloud->thinning(0.004);
+  //  initialCloud->computeBBox(initialCloud->points);
+
+   //   PointCloud *cloud2 = new PointCloud();
+ //   cloud2 = initialCloud->smooth(.01);
   //  PointCloud *cloud2 = new PointCloud();
   //    initialCloud->thinning(.2);
     // initialCloud = initialCloud->smooth(1);
@@ -145,7 +159,7 @@ int main(int argc, char **argv) {
  */
 
       clouds.push_back(initialCloud);
-      clouds.push_back(cloud2);
+    //  clouds.push_back(cloud2);
      // clouds.push_back(cloud3);
 
     glutInit(&argc, argv);
