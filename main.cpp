@@ -24,17 +24,31 @@ void display(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
 
+    // draw best fit line
     glLineWidth(2.5);
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_LINES);
-    glVertex3f(drawPoints->at(0).x,drawPoints->at(0).y, drawPoints->at(0).z);
-    glVertex3f(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
+    glVertex3d(drawPoints->at(0).x, drawPoints->at(0).y, drawPoints->at(0).z);
+    glVertex3d(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3d(drawPoints->at(2).x, drawPoints->at(2).y, drawPoints->at(2).z);
+    glVertex3d(drawPoints->at(3).x, drawPoints->at(3).y, drawPoints->at(3).z);
+    glEnd();
+    //draw best fit plane
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.0, 0.5, 1.0, 0.3);
+    glBegin(GL_QUADS);
+    glVertex3d(drawPoints->at(0).x, drawPoints->at(0).y, drawPoints->at(0).z);
+    glVertex3d(drawPoints->at(2).x, drawPoints->at(2).y, drawPoints->at(2).z);
+    glVertex3d(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
+    glVertex3d(drawPoints->at(3).x, drawPoints->at(3).y, drawPoints->at(3).z);
     glEnd();
 
     glBegin(GL_POINTS);
 
     for_each(clouds.begin(), clouds.end(), [](PointCloud *cloud) { // draw all clouds not just one
-        for (int i = 0; i < cloud->points.size(); ++i) {
+        for (unsigned int i = 0; i < cloud->points.size(); ++i) {
             Point3D pt = cloud->points[i];
           //  printf("Color: %f %f %f",pt.r,pt.g,pt.b);
             if (!pt.ignore){
@@ -44,7 +58,7 @@ void display(void) {
             }
 
         }
-    });    
+    });
     glEnd();
     glutSwapBuffers();
 }

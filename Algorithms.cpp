@@ -117,13 +117,14 @@ vector<Point3D>* computeBestFits(const std::vector<Point3D> &points) {
     std::cout << "mean distance to plane: " << meanDistance << std::endl;
 
 
-    double param = 1.0;
+    double param = 0.1;
     double param2 = 1.0;
 
     vector<Point3D>* drawPoints = new vector<Point3D>();
-    drawPoints->push_back(center + (ev0*param));
-    drawPoints->push_back(center - (ev0*param2));
-    //drawPoints->push_back(ev2);
+    drawPoints->push_back(center + ev0*param);
+    drawPoints->push_back(center - ev0*param);
+    drawPoints->push_back(center + ev2*param);
+    drawPoints->push_back(center - ev2*param);
     return drawPoints;
 
 }
@@ -166,7 +167,7 @@ Point3D crossProduct(const Point3D& v1, const Point3D& v2)
 }
 
 /** @brief Computes the distance of a point to a 3D line.
-    @param point         point 
+    @param point         point
     @param pointOnLine   a point on the line (e.g. "center" point)
     @param lineDirection vector respresenting the 3d direction of the line (must be a unit vector -> length==1)
 */
