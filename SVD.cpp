@@ -18,6 +18,68 @@ namespace SVD
                      a MxM-matrix that contains the eigenvector in its columns (sorted in decending order of the singular values).
 */
 //------------------------------------------------------------------------------
+
+
+    void solveLinearEquationSystem(Matrix& A, std::vector<double>& x, const std::vector<double>& b)
+    {
+      const size_t M = A.M(); //number of rows (== number of equations)
+      const size_t N = A.N(); //numer of columns (== number of unknown variables that we want to compute)
+
+      x.resize(A.N());  //set the size of the solution vector
+
+      //prepare storage for SVD solver
+      std::vector<double> S; //vector of singular values from Singular Value Decomposition
+      Matrix V; //one of the resulting matrices from the SV decomposition (U*S*V^T)
+
+      //compute singular value decomposition
+      //Matrix A gets overriden / replaced by the matrix U of the SVD
+      decomposeMatrix(A, S, V);
+
+      /*******************************************************/
+      //The essential step of the SVD is to exclude singular positions, which are
+      //close to zero from the solution by explicitely setting them to zero
+      double wmax = 0;
+      for (size_t i = 0; i<S.size(); ++i){
+        if (S[i] > wmax)wmax = S[i];
+      }
+      const double wmin = 0.5*std::sqrt(M + N + 1.0)*wmax*std::numeric_limits<double>::epsilon();
+
+      for (size_t i = 0; i<S.size(); ++i){
+        if (S[i] < wmin) S[i] = 0;
+      }
+      /*******************************************************/
+
+
+      /*******************************************************/
+      //Compute U^T*b divided by the weights(singular values) S[j]
+      std::vector<double> tmp(N);
+      for (size_t j=0; j<N; ++j)
+      {
+        tmp[j] = 0;     //initialize
+        if (S[j] == 0){ //ignore singular positions
+          continue;
+        }
+
+        for (size_t i=0; i<M; ++i){
+          tmp[j] += A(i,j) * b[i];
+        }
+
+        tmp[j] /= S[j];
+      }
+
+      //Finally multiply temporary result with V
+      for (size_t j=0; j<N; ++j)
+      {
+        x[j] = 0;
+        for (size_t jj = 0; jj<N; ++jj)
+        {
+          x[j] += V(j, jj)*tmp[jj];
+        }
+      }
+      /*******************************************************/
+    }
+
+
 void computeSymmetricEigenvectors(Matrix& U)
 { 
   Matrix V;

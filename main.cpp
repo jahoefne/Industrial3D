@@ -11,8 +11,13 @@
 #include <GL/glut.h>
 #endif
 
+PointCloud *initialCloud;
 vector<Point3D>* drawPoints;
-
+bool drawBestFitLine = false;
+bool drawBestFitPlane= false;
+Point3D spherecenter;
+double sphereRadius = 0;
+bool drawBestFitSphere = false;
 std::vector<PointCloud *> clouds; // all visible point clouds
 int height = 786, width = 1024, xposStart = 0, yposStart = 0;
 
@@ -25,25 +30,49 @@ void display(void) {
     glClearDepth(1.0f);
 
     // draw best fit line
+
     glLineWidth(2.5);
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_LINES);
-    glVertex3d(drawPoints->at(0).x, drawPoints->at(0).y, drawPoints->at(0).z);
-    glVertex3d(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3d(drawPoints->at(2).x, drawPoints->at(2).y, drawPoints->at(2).z);
-    glVertex3d(drawPoints->at(3).x, drawPoints->at(3).y, drawPoints->at(3).z);
-    glEnd();
-    //draw best fit plane
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(0.0, 0.5, 1.0, 0.3);
-    glBegin(GL_QUADS);
-    glVertex3d(drawPoints->at(0).x, drawPoints->at(0).y, drawPoints->at(0).z);
-    glVertex3d(drawPoints->at(2).x, drawPoints->at(2).y, drawPoints->at(2).z);
-    glVertex3d(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
-    glVertex3d(drawPoints->at(3).x, drawPoints->at(3).y, drawPoints->at(3).z);
-    glEnd();
+    if (drawBestFitLine)
+    {
+        glColor3f(1.0f, 1.0f, 0.0f);
+        glBegin(GL_LINES);
+        glVertex3d(drawPoints->at(0).x, drawPoints->at(0).y, drawPoints->at(0).z);
+        glVertex3d(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
+        glEnd();
+    }
+    if (drawBestFitPlane)
+    {
+        //draw best fit plane
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glBegin(GL_LINE_LOOP);
+        glVertex3d(drawPoints->at(0).x, drawPoints->at(0).y, drawPoints->at(0).z);
+        glVertex3d(drawPoints->at(1).x, drawPoints->at(1).y, drawPoints->at(1).z);
+        glVertex3d(drawPoints->at(2).x, drawPoints->at(2).y, drawPoints->at(2).z);
+        glVertex3d(drawPoints->at(3).x, drawPoints->at(3).y, drawPoints->at(3).z);
+        glEnd();
+    }
+
+    if (drawBestFitSphere)
+    {
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glPushMatrix();
+        glColor3ub(155, 255, 0);
+        glTranslated(spherecenter.x, spherecenter.y, spherecenter.z );
+        GLUquadric* quad = gluNewQuadric();
+        gluSphere(quad, sphereRadius, 30, 30);
+        gluDeleteQuadric(quad);
+        glPopMatrix();
+
+        glDisable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glEnd();
+    }
+
+
+
 
     glBegin(GL_POINTS);
 
@@ -122,11 +151,25 @@ void setupCamera() {
 
 
 int main(int argc, char **argv) {
-    PointCloud *initialCloud = new PointCloud();
-    initialCloud->loadPointsFromFile("../data/stbunny.xyz", 1, 1, 0);
+    initialCloud = new PointCloud();
+    initialCloud->loadPointsFromFile("../data/horse.xyz", 1, 1, 0);
     //initialCloud = initialCloud->smooth(.01);
-    drawPoints = computeBestFits(initialCloud->points);
+    //drawPoints = computeBestFits(initialCloud->points);
 
+
+   // drawPoints = computeBestFitPlane(initialCloud->points);
+
+   drawBestFitPlane = false;
+
+  drawPoints = computeBestFitLine(initialCloud->points);
+
+    drawBestFitLine = true;
+
+  //  computeBestFitSphere(initialCloud->points , spherecenter, sphereRadius);
+    drawBestFitSphere = false;
+
+
+   //   drawPoints = computeBestFitLine(initialCloud->points);
     initialCloud->thinning(0.004);
   //  initialCloud->computeBBox(initialCloud->points);
 
