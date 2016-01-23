@@ -4,7 +4,8 @@
 
 #include <string.h>
 #include "PointCloud.h"
-
+#include "Algorithms.h"
+#include "SVD.h"
 #include "K3DTree.h"
 
 #include <climits>
@@ -206,6 +207,7 @@ Point3D* getcolor(Point3D* green, Point3D* yellow, Point3D* red,Point3D* final,f
 ;
 
 void PointCloud::alignTo(PointCloud *cloud) {
+
     vector<Point3D *> vectorDiffs;
     long pointCount = points.size();
     for (int i = 0; i < SAMPLE_SIZE; i++) {
@@ -234,6 +236,7 @@ void PointCloud::alignTo(PointCloud *cloud) {
 
 void PointCloud::thinning(double radius)
 {
+
     vector<Point3D *> neighbors;
 
     long Numpoints = points.size();
@@ -358,6 +361,30 @@ double PointCloud::maxAt(std::vector<double>& vector_name) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Point3D* PointCloud::getcolor(Point3D* green, Point3D* yellow, Point3D* red,Point3D* final,float interpolation_factor)
 {
 
@@ -382,4 +409,8 @@ Point3D* PointCloud::getcolor(Point3D* green, Point3D* yellow, Point3D* red,Poin
 
 
     return(final);
+
+
+
+
 }

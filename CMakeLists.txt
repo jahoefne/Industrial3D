@@ -20,7 +20,7 @@ set(SOURCE_FILES
         Matrix.h
         SVD.h
         SVD.cpp
-        Point3D.h)
+        Point3D.h Shader.cpp Shader.h)
 
 
 if(DOXYGEN_FOUND)

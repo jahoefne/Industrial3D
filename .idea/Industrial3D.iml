@@ -12,6 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/PointCloud.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SVD.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SVD.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Shader.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Shader.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/data/angel.xyz" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/data/angel2.xyz" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/data/bunny.xyz" isTestSource="false" />

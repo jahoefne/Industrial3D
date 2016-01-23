@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include "Algorithms.h"
+#include "SVD.h"
 #ifdef __APPLE__
 
 #include <GLUT/glut.h>
@@ -13,6 +14,7 @@
 
 PointCloud *initialCloud;
 vector<Point3D>* drawPoints;
+std::vector<Point3D> normals;
 bool drawBestFitLine = false;
 bool drawBestFitPlane= false;
 Point3D spherecenter;
@@ -21,10 +23,154 @@ bool drawBestFitSphere = false;
 std::vector<PointCloud *> clouds; // all visible point clouds
 int height = 786, width = 1024, xposStart = 0, yposStart = 0;
 
+
+/////////////////////////////////////////////////////////////////////////
+
+GLuint program;
+
+static const GLchar * vertex_shader[] ={"\
+varying vec3 N;\
+varying vec3 v;  \
+varying vec4 FrontColor;  \
+void main(void)     \
+{                 \
+  v = vec3(gl_ModelViewMatrix * gl_Vertex);   \
+  N = normalize(gl_NormalMatrix * gl_Normal);   \
+  FrontColor = gl_Color;                       \
+  gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;  \
+}"};
+
+static const GLchar * fragment_shader[] ={"\
+        varying vec3 N;\
+        varying vec3 v;\
+        varying vec4 FrontColor;\
+        void main(void)\
+        { \
+            vec3 lightPosition=vec3(1.0,1.0,1.0);        \
+            vec4 ambientColor=vec4(0.1, 0.1, 0.1, 1.0);    \
+            vec4 specularColor=vec4(0.7, 0.7, 0.7, 1.0);  \
+            float shininess=100.0;                       \
+            vec3 N = normalize(N);                       \
+            vec3 L = normalize(lightPosition - v);        \
+            vec3 E = normalize(-v);                      \
+            vec3 R = normalize(-reflect(L, N));          \
+            vec4 Iamb = ambientColor;                     \
+            vec4 Idiff = FrontColor * max(abs(dot(N, L)), 0.0);  \
+            Idiff = clamp(Idiff, 0.0, 1.0);             \
+            vec4 Ispec = specularColor * pow(max(dot(R, E), 0.0), 0.03* shininess);\
+            Ispec = clamp(Ispec, 0.0, 1.0);\
+            gl_FragColor = Iamb + Idiff + Ispec;\
+        }"};
+
+
+
+void create_shaders()
+{
+    GLuint v, f;
+
+    v = glCreateShader(GL_VERTEX_SHADER);
+    f = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(v, 1, vertex_shader, NULL);
+    glShaderSource(f, 1, fragment_shader, NULL);
+    glCompileShader(v);
+    GLint compiled;
+    glGetShaderiv(v, GL_COMPILE_STATUS, &compiled );
+    if ( !compiled ) {
+//        GLsizei  maxLength, length;
+//        glGetShaderiv( v, GL_INFO_LOG_LENGTH, &maxLength );
+//        GLchar* log = malloc(sizeof(GLchar)*(maxLength+1));
+//        glGetShaderInfoLog(v,  maxLength, &length, log);
+        printf("Vertex Shader compilation failed: %s\n");
+//        free(log);
+    }
+    glCompileShader(f);
+    glGetShaderiv(f, GL_COMPILE_STATUS, &compiled );
+    if ( !compiled ) {
+//        GLsizei  maxLength, length;
+//        glGetShaderiv( f, GL_INFO_LOG_LENGTH, &maxLength );
+//        GLchar* log = malloc(sizeof(GLchar)*(maxLength+1));
+//        glGetShaderInfoLog(f,  maxLength, &length, log);
+        printf("Fragment Shader compilation failed: %s\n");
+//        free(log);
+    }
+    program = glCreateProgram();
+    glAttachShader(program, f);
+    glAttachShader(program, v);
+    glLinkProgram(program);
+    GLint linked;
+    glGetProgramiv(program, GL_LINK_STATUS, &linked );
+    if ( !linked ) {
+//        GLsizei len;
+//        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len );
+//        GLchar* log = malloc(sizeof(GLchar)*(len+1));
+//        glGetProgramInfoLog(program, len, &len, log );
+        printf("Shader linking failed: %s\n");
+//        free(log);
+    }
+    glUseProgram(program);
+}
+
+
+////////////////////////////////////////////////////////////////////////
+
+void computeNormalVectors(std::vector<Point3D>& points, double radius, std::vector<Point3D>& normals)
+{
+
+    Point3D* rangeBegin = points.data();                          //C++-Style to get address of first element
+    Point3D* rangeEnd = rangeBegin + points.size();               //compute address of last element (exclusive)
+
+    //  const KDNode* rootNode = buildKdTree(rangeBegin, rangeEnd, 0);  //recusrsively build kdTree for given range, starting with tree depth = 0
+    K3DTree* kdTree1 = new K3DTree(&points); // Init Kd-Tree
+
+    normals.resize(points.size());  //make sure that array for the normal vectors has the same size as we have points
+
+    //because all the relevant variables are declared inside the for loop we can safely parallelize the code
+    //without having races between different parallel omp threads.
+#pragma omp parallel for
+    for (ptrdiff_t i = 0; i < (ptrdiff_t)points.size(); ++i)
+    {
+        vector<Point3D *> neighbors;
+        std::vector<Point3D> neighbors2;
+        neighbors = *(kdTree1->findRadiusNeighbors(&(points[i]),radius));
+
+
+        //      findNeighbors(rootNode, points[i], radius, neighbors, 0); //find localneighbor points within given radius
+
+        if (neighbors.size() > 2) //best-fit plane needs at least 3 points
+        {
+            Matrix M(3, 3);
+            //
+            long Numpoints = neighbors.size();
+            for(int n = 0; n < Numpoints; n++)
+            {
+                Point3D *  point1;
+                point1 = neighbors[n];
+                Point3D  point11;
+                point11.x = point1->x;
+                point11.y = point1->y;
+                point11.z = point1->z;
+                neighbors2.push_back(point11);
+            }
+            //
+           computeCoarianceMatrix(neighbors2, M);
+
+            SVD::computeSymmetricEigenvectors(M);
+
+            Point3D normal = Point3D(M(0, 2), M(1, 2), M(2, 2)); //assign normal vector of the plane (eigenvector corresponding to smalles eigenvalue == direction of smallest variance)
+            normals[i] = normal;
+        }
+        else //if there are not enough points in the neighborhood we assign an empty/useless normal
+            normals[i] = Point3D(0, 0, 0);
+    }
+}
+
+
 /**
  * The display function - gets called by OpenGL to draw to the screen
  */
 void display(void) {
+
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
@@ -82,7 +228,8 @@ void display(void) {
           //  printf("Color: %f %f %f",pt.r,pt.g,pt.b);
             if (!pt.ignore){
                 glColor3f(pt.r, pt.g, pt.b);
-                glPointSize(pt.size);
+                glPointSize(3.0f);
+                glNormal3f(normals[i].x,normals[i].y,normals[i].z);
                 glVertex3d(pt.x, pt.y, pt.z);
             }
 
@@ -159,18 +306,29 @@ int main(int argc, char **argv) {
 
    // drawPoints = computeBestFitPlane(initialCloud->points);
 
+
+
+
+
+    double radius = 0.001; //for the horse, buddha, dragon
+
+    computeNormalVectors(initialCloud->points, radius, normals);
+
+
+
+
    drawBestFitPlane = false;
 
   drawPoints = computeBestFitLine(initialCloud->points);
 
-    drawBestFitLine = true;
+    drawBestFitLine = false;
 
-  //  computeBestFitSphere(initialCloud->points , spherecenter, sphereRadius);
-    drawBestFitSphere = false;
+   computeBestFitSphere(initialCloud->points , spherecenter, sphereRadius);
+    drawBestFitSphere = true;
 
 
    //   drawPoints = computeBestFitLine(initialCloud->points);
-    initialCloud->thinning(0.004);
+   // initialCloud->thinning(0.004);
   //  initialCloud->computeBBox(initialCloud->points);
 
    //   PointCloud *cloud2 = new PointCloud();
@@ -229,6 +387,7 @@ int main(int argc, char **argv) {
 
     glutCreateWindow("Industrial 3D Scanning");
     setupCamera();
+    glEnable(GL_DEPTH_TEST);
 
     glutDisplayFunc(display);
 
@@ -236,13 +395,22 @@ int main(int argc, char **argv) {
     glutMotionFunc(mouseDrag);
     glutSpecialFunc(keys);
 
-    // glewInit();
+    glewInit();
+
+    //shaders
+    create_shaders();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     glTranslated(-initialCloud->center.x, -initialCloud->center.y, -initialCloud->center.z - initialCloud->sceneRadius);
     glutPostRedisplay();
+
+
+
+
+
+
     glutMainLoop();
     return 0;
 }

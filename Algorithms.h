@@ -8,6 +8,8 @@
 
 Point3D computeCenter(const std::vector<Point3D>& points);                  ///< Computes and returns the center of the point cloud
 void computeCoarianceMatrix(const std::vector<Point3D>& points, Matrix& M); ///< Coputes the 3x3 covariance matrix
+
+
 std::vector<Point3D> *computeBestFits(const std::vector<Point3D>& points);                   ///< Computes best-fit line and plane
 
 

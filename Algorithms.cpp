@@ -75,6 +75,53 @@ void computeCovarianceMatrix3x3(const std::vector<Point3D> &points, Matrix &M) {
 
 }
 
+
+void computeCoarianceMatrix(const std::vector<Point3D> &points, Matrix &M) {
+    M.resize(3, 3);
+    const ptrdiff_t N(points.size());
+    if (N < 1) return;
+
+    //compute the mean value (center) of the points cloud
+    Point3D mean = computeCenter(points);
+
+    //Compute the entries of the (symmetric) covariance matrix
+    double Mxx(0), Mxy(0), Mxz(0), Myy(0), Myz(0), Mzz(0);
+#pragma omp parallel for reduction(+: Mxx,Mxy,Mxz,Myy,Myz,Mzz) //omp reduction enables parallel sum up of values
+    for (ptrdiff_t i = 0; i < N; ++i) {
+        const Point3D &pt = points[i];
+
+        //generate mean-free coorinates
+        const double x1(pt.x - mean.x);
+        const double y1(pt.y - mean.y);
+        const double z1(pt.z - mean.z);
+
+        //Sum up the entries for the covariance matrix
+        Mxx += x1 * x1;
+        Mxy += x1 * y1;
+        Mxz += x1 * z1;
+        Myy += y1 * y1;
+        Myz += y1 * z1;
+        Mzz += z1 * z1;
+
+    }
+
+    //setting the sums to the matrix (division by N just for numerical reason if we have very large sums)
+    M(0, 0) = Mxx / N;
+    M(0, 1) = Mxy / N;
+    M(0, 2) = Mxz / N;
+    M(1, 0) = M(0, 1);
+    M(1, 1) = Myy / N;
+    M(1, 2) = Myz / N;
+    M(2, 0) = M(0, 2);
+    M(2, 1) = M(1, 2);
+    M(2, 2) = Mzz / N;
+
+    for(int i=0; i<9; ++i)
+        printf("%lf\n",M[i] );
+
+}
+
+
 Point3D* midpoint2(const Point3D& a, const Point3D& b)
 {
     //double middle = (a.x + b.x) / 2;

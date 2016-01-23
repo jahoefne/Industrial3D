@@ -220,6 +220,20 @@ private:
         }
         return curr->ptrFirstPoint;
     }
+
+
+
+
+
+
+
+
+
+
 };
+
+
+
+
 
 #endif //INDUSTRIAL3D_K3DTREE_H
